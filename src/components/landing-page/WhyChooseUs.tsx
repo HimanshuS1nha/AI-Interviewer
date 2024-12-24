@@ -30,28 +30,22 @@ const WhyChooseUs = () => {
           </p>
         </div>
 
-        <div className="flex flex-col gap-y-8">
-          {whyChooseUs.map((ele, i) => {
+        <div className="flex justify-center items-center  gap-8 flex-wrap">
+          {whyChooseUs.map((item) => {
             return (
-              <div className="flex justify-between items-center" key={i}>
-                {ele.map((item) => {
-                  return (
-                    <div className="flex gap-x-3 items-center" key={item.title}>
-                      <div
-                        className={`rounded-full p-2 flex items-center justify-center bg-${item.color}-500`}
-                      >
-                        <item.Icon size={30} color="white" />
-                      </div>
-                      <div className="flex flex-col gap-y-1.5">
-                        <p className="text-xl font-semibold">{item.title}</p>
-                        <p className="text-gray-700 text-sm">
-                          Lorem ipsum dolor sit amet consectetur, adipisicing
-                          elit.
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="flex gap-x-3 items-center" key={item.title}>
+                <div
+                  className="rounded-full p-2 flex items-center justify-center"
+                  style={{ backgroundColor: item.color }}
+                >
+                  <item.Icon size={30} color="white" />
+                </div>
+                <div className="flex flex-col gap-y-1.5">
+                  <p className="text-xl font-semibold">{item.title}</p>
+                  <p className="text-gray-700 text-sm">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  </p>
+                </div>
               </div>
             );
           })}
