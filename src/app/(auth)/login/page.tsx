@@ -1,7 +1,8 @@
+import Link from "next/link";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 const Login = () => {
   return (
@@ -10,7 +11,7 @@ const Login = () => {
         <p className="text-primary text-xl font-semibold text-center">
           Login to your account
         </p>
-        
+
         <div className="flex flex-col gap-y-3">
           <Label htmlFor="email" className="ml-1">
             Email
