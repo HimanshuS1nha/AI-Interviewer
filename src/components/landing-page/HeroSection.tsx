@@ -1,18 +1,16 @@
 import Link from "next/link";
 import { ArrowRight, Star } from "lucide-react";
 
+import Title from "@/components/landing-page/Title";
+
 const HeroSection = () => {
   return (
     <div className="h-[92vh] flex flex-col items-center justify-center gap-y-8">
       <div className="flex flex-col items-center gap-y-6">
-        <div className="flex flex-col items-center gap-y-2.5">
-          <p className="text-primary text-sm font-medium">
-            Streamline hiring with AI-driven interviews
-          </p>
-          <h1 className="text-6xl font-semibold text-[#222222] max-w-4xl text-center tracking-tight">
-            Enhance your hiring with efficient AI-powered interviews
-          </h1>
-        </div>
+        <Title
+          tagline="Streamline hiring with AI-driven interviews"
+          title="Enhance your hiring with efficient AI-powered interviews"
+        />
         <p className="text-center max-w-3xl text-gray-700">
           Get detailed candidate evaluations with AI-powered technical
           interviews. Quickly assess skills, identify top talent, and make

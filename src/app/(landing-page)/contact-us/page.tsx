@@ -2,16 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import Title from "@/components/landing-page/Title";
 
 const ContactUs = () => {
   return (
     <div className="flex flex-col gap-y-10 items-center">
-      <div className="mt-10 flex flex-col items-center gap-y-2.5">
-        <p className="text-primary text-sm font-medium">Reach out to us</p>
-        <h1 className="text-6xl font-semibold text-[#222222] max-w-4xl text-center tracking-tight">
-          Contact Us
-        </h1>
-      </div>
+      <Title tagline="Reach out to us" title="Contact Us" />
 
       <div className="flex flex-col gap-y-6 w-[60%]">
         <div className="flex flex-col gap-y-3">
