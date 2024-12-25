@@ -1,10 +1,29 @@
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+import {
+  loginValidator,
+  type loginValidatorType,
+} from "@/validators/login-validator";
+
 const Login = () => {
+  const {
+    register,
+    reset,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<loginValidatorType>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(loginValidator),
+  });
   return (
     <>
       <form className="flex flex-col gap-y-7 w-[90%]">
@@ -21,7 +40,11 @@ const Login = () => {
             type="email"
             id="email"
             required
+            {...register("email", { required: true })}
           />
+          {errors.email && (
+            <p className="text-rose-600 text-sm">{errors.email.message}</p>
+          )}
         </div>
         <div className="flex flex-col gap-y-3">
           <Label htmlFor="password" className="ml-1">
@@ -32,7 +55,11 @@ const Login = () => {
             type="password"
             id="password"
             required
+            {...register("password", { required: true })}
           />
+          {errors.password && (
+            <p className="text-rose-600 text-sm">{errors.password.message}</p>
+          )}
           <div className="flex justify-end">
             <p className="text-sm text-primary hover:underline delay-100 transition-all cursor-pointer">
               Forgot Password?
@@ -40,7 +67,7 @@ const Login = () => {
           </div>
         </div>
 
-        <Button>Login</Button>
+        <Button type="submit">Login</Button>
       </form>
 
       <div className="flex flex-col gap-y-4 items-center">
