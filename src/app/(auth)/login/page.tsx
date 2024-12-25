@@ -51,7 +51,7 @@ const Login = () => {
       setUser(data.user);
       toast.success(data.message);
       reset();
-      router.replace(`/dashboard`);
+      router.replace(`/dashboard/interviews`);
     },
     onError: async (error) => {
       if (error instanceof AxiosError && error.response?.data.error) {
