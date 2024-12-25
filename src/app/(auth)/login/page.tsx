@@ -1,17 +1,30 @@
+"use client";
+
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
+import { useUser } from "@/hooks/useUser";
 
 import {
   loginValidator,
   type loginValidatorType,
 } from "@/validators/login-validator";
 
+import type { UserType } from "../../../../types";
+
 const Login = () => {
+  const router = useRouter();
+  const setUser = useUser((state) => state.setUser);
+
   const {
     register,
     reset,
@@ -24,9 +37,36 @@ const Login = () => {
     },
     resolver: zodResolver(loginValidator),
   });
+
+  const { mutate: handleLogin, isPending } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: async (values: loginValidatorType) => {
+      const { data } = await axios.post(`/api/login`, {
+        ...values,
+      });
+
+      return data as { user: UserType; message: string };
+    },
+    onSuccess: async (data) => {
+      setUser(data.user);
+      toast.success(data.message);
+      reset();
+      router.replace(`/dashboard`);
+    },
+    onError: async (error) => {
+      if (error instanceof AxiosError && error.response?.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Some error occured. Please try again later!");
+      }
+    },
+  });
   return (
     <>
-      <form className="flex flex-col gap-y-7 w-[90%]">
+      <form
+        className="flex flex-col gap-y-7 w-[90%]"
+        onSubmit={handleSubmit((data) => handleLogin(data))}
+      >
         <p className="text-primary text-xl font-semibold text-center">
           Login to your account
         </p>
@@ -67,7 +107,9 @@ const Login = () => {
           </div>
         </div>
 
-        <Button type="submit">Login</Button>
+        <Button type="submit" disabled={isPending}>
+          {isPending ? "Please wait..." : "Login"}
+        </Button>
       </form>
 
       <div className="flex flex-col gap-y-4 items-center">
