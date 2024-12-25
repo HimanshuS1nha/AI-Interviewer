@@ -14,7 +14,7 @@ export const pricingPlan = [
     planName: "Pro",
     price: "₹500",
     features: [
-      "5 interviews (10 questions and 30 candidates per interview)",
+      "5 interviews (5 questions and 30 candidates per interview)",
       "AI generated questions based on your job description",
       "Full candidate's interview analysis provided by AI",
       "24X7 support",
