@@ -2,19 +2,24 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import InterviewCard from "@/components/dashboard/InterviewCard";
 
+import type { InterviewType } from "../../../../types";
+
 const Interviews = () => {
-  const dummyInterviews = [
+  const dummyInterviews: InterviewType[] = [
     {
+      id: "1",
       jobTitle: "React Interview",
       experience: 5,
       status: "ongoing",
     },
     {
+      id: "2",
       jobTitle: "React Native Interview",
       experience: 2,
       status: "complete",
     },
     {
+      id: "3",
       jobTitle: "Java Interview",
       experience: 8,
       status: "not_started",
@@ -29,9 +34,7 @@ const Interviews = () => {
 
       <div className="flex gap-4 items-center flex-wrap">
         {dummyInterviews.map((interview) => {
-          return (
-            <InterviewCard interview={interview} key={interview.jobTitle} />
-          );
+          return <InterviewCard interview={interview} key={interview.id} />;
         })}
       </div>
     </section>

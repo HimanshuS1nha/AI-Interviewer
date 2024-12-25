@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import Link from "next/link";
 
@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/input-otp";
 
 const Verify = () => {
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email");
+//   const searchParams = useSearchParams();
+//   const email = searchParams.get("email");
 
   const [otp, setOtp] = useState("");
 

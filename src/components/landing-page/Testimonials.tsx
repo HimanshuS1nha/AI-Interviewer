@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Quote } from "lucide-react";
 
 import {
@@ -44,7 +45,7 @@ const Testimonials = () => {
               <div className="p-1">
                 <Card>
                   <CardContent className="flex flex-col items-center gap-y-3 justify-center p-6">
-                    <img
+                    <Image
                       src={testimonial.image}
                       className="w-16 sm:w-20 h-16 sm:h-20 rounded-full object-cover"
                       alt={testimonial.name}

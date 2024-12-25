@@ -2,7 +2,9 @@ import { Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-const InterviewCard = ({ interview }: any) => {
+import type { InterviewType } from "../../../types";
+
+const InterviewCard = ({ interview }: { interview: InterviewType }) => {
   return (
     <div className="border border-gray-300 w-[98%] sm:w-[410px] rounded-lg py-3 px-6 flex flex-col gap-y-5">
       <div className="flex flex-col gap-y-1">
