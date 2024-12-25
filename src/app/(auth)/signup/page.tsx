@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,10 +35,34 @@ const Signup = () => {
     },
     resolver: zodResolver(signupValidator),
   });
+
+  const { mutate: handleSignup, isPending } = useMutation({
+    mutationKey: ["signup"],
+    mutationFn: async (values: signupValidatorType) => {
+      const { data } = await axios.post(`/api/signup`, {
+        ...values,
+      });
+
+      return data as { message: string };
+    },
+    onSuccess: async (data) => {
+      toast.success(data.message);
+      reset();
+      router.push(`/verify?email=${getValues("email")}`);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError && error.response?.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Some error occured. Please try again later!");
+      }
+    },
+  });
   return (
     <>
       <form
         className="flex flex-col gap-y-7 w-[90%]"
+        onSubmit={handleSubmit((data) => handleSignup(data))}
       >
         <p className="text-primary text-xl font-semibold text-center">
           Create an account
@@ -45,7 +72,7 @@ const Signup = () => {
             Name
           </Label>
           <Input
-            placeholder="Enter your name"
+            placeholder="Enter name of the company"
             type="name"
             id="name"
             required
@@ -102,8 +129,8 @@ const Signup = () => {
             </p>
           )}
         </div>
-        <Button type="submit">
-          Create
+        <Button type="submit" disabled={isPending}>
+          {isPending ? "Please wait..." : "Signup"}
         </Button>
       </form>
 
