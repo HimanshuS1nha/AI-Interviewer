@@ -47,8 +47,8 @@ const Signup = () => {
     },
     onSuccess: async (data) => {
       toast.success(data.message);
-      reset();
       router.push(`/verify?email=${getValues("email")}`);
+      reset();
     },
     onError: (error) => {
       if (error instanceof AxiosError && error.response?.data.error) {
