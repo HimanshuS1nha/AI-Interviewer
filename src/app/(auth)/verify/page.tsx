@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/input-otp";
 
 import { verifyValidator } from "@/validators/verify-validator";
+import { emailValidator } from "@/validators/email-validator";
 
 const Verify = () => {
   const router = useRouter();
@@ -44,7 +45,32 @@ const Verify = () => {
     onSuccess: (data) => {
       toast.success(data.message);
       setOtp("");
-      router.replace(`/login`);
+      router.replace("/login");
+    },
+    onError: (error) => {
+      if (error instanceof ZodError) {
+        toast.error(error.errors[0].message);
+      } else if (error instanceof AxiosError && error.response?.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Some error occured. Please try again later!");
+      }
+    },
+  });
+
+  const { mutate: handleResendOtp, isPending: resendOtpPending } = useMutation({
+    mutationKey: ["resend-otp"],
+    mutationFn: async () => {
+      const parsedData = await emailValidator.parseAsync({ email });
+
+      const { data } = await axios.post(`/api/resend-otp`, {
+        ...parsedData,
+      });
+
+      return data as { message: string };
+    },
+    onSuccess: (data) => {
+      toast.success(data.message);
     },
     onError: (error) => {
       if (error instanceof ZodError) {
@@ -88,12 +114,19 @@ const Verify = () => {
             </InputOTPGroup>
           </InputOTP>
           <div className="flex justify-end">
-            <p className="text-sm hover:underline delay-100 transition-all cursor-pointer text-primary">
-              Resend OTP
+            <p
+              className={`text-sm hover:underline delay-100 transition-all cursor-pointer ${
+                verifyPending || resendOtpPending
+                  ? "pointer-events-none text-blue-300"
+                  : "text-primary"
+              }`}
+              onClick={() => handleResendOtp()}
+            >
+              {resendOtpPending ? "Please wait..." : "Resend OTP"}
             </p>
           </div>
         </div>
-        <Button type="submit" disabled={verifyPending}>
+        <Button type="submit" disabled={verifyPending || resendOtpPending}>
           {verifyPending ? "Please wait..." : "Verify"}
         </Button>
       </form>
