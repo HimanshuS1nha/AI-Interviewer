@@ -5,7 +5,7 @@ import { generate } from "otp-generator";
 import prisma from "@/lib/db";
 import { sendEmail } from "@/lib/send-email";
 
-export const createOtp = async (email: string) => {
+export const createAndSendOtp = async (email: string) => {
   const otp = parseInt(
     generate(6, {
       digits: true,

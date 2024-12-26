@@ -5,6 +5,7 @@ import { SignJWT } from "jose";
 import { cookies } from "next/headers";
 
 import { getUserByEmail } from "@/helpers/get-user-by-email";
+import { createAndSendOtp } from "@/helpers/create-and-send-otp";
 
 import { loginValidator } from "@/validators/login-validator";
 
@@ -30,7 +31,12 @@ export const POST = async (req: NextRequest) => {
     }
 
     if (!user.isEmailVerified) {
-      //! Create and send otp
+      await createAndSendOtp(email);
+
+      return NextResponse.json(
+        { error: "Email not verified" },
+        { status: 403 }
+      );
     }
 
     const token = await new SignJWT({ email: user.email })

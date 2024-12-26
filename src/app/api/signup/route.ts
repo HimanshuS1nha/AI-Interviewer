@@ -5,6 +5,7 @@ import { hash } from "bcrypt";
 import prisma from "@/lib/db";
 
 import { getUserByEmail } from "@/helpers/get-user-by-email";
+import { createAndSendOtp } from "@/helpers/create-and-send-otp";
 
 import { signupValidator } from "@/validators/signup-validator";
 
@@ -38,7 +39,7 @@ export const POST = async (req: NextRequest) => {
       },
     });
 
-    //! Create and send OTP
+    await createAndSendOtp(email);
 
     return NextResponse.json(
       { message: "Account created successfully. Verify your email" },
