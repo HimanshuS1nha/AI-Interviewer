@@ -25,7 +25,7 @@ export const createAndSendOtp = async (email: string) => {
     data: {
       userEmail: email,
       otp,
-      expiresIn: new Date(Date.now() + 1000 * 60 * 5),
+      expires: new Date(Date.now() + 1000 * 60 * 5),
     },
   });
 
