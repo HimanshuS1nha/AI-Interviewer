@@ -23,4 +23,17 @@ model Users {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  OTP OTP?
+}
+
+model OTP {
+  id  String @id @default(uuid())
+  otp Int
+
+  expiresIn DateTime
+  createdAt DateTime @default(now())
+
+  userEmail String @unique
+  user      Users  @relation(references: [email], fields: [userEmail], onDelete: Cascade)
 }
