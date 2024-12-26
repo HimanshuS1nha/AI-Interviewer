@@ -24,10 +24,10 @@ model Users {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  OTP OTP?
+  OTP Otp?
 }
 
-model OTP {
+model Otp {
   id  String @id @default(uuid())
   otp Int
 
