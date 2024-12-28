@@ -21,6 +21,7 @@ const Navbar = () => {
       const { data } = await axios.get("/api/is-logged-in");
       return data as { user: UserType };
     },
+    retry: 1,
   });
 
   useEffect(() => {

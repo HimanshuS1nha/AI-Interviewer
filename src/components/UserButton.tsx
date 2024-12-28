@@ -1,7 +1,10 @@
-import { useRouter } from "next/navigation";
+"use client";
+
+import { useRouter, usePathname } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 import {
   DropdownMenu,
@@ -18,6 +21,7 @@ import { useUser } from "@/hooks/useUser";
 const UserButton = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const pathname = usePathname();
   const { user, setUser } = useUser();
 
   const { mutate: handleLogout, isPending } = useMutation({
@@ -48,6 +52,13 @@ const UserButton = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My account</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        {pathname === "/" && (
+          <DropdownMenuItem asChild>
+            <Link href={"/dashboard"} className="cursor-pointer">
+              Go to dashboard
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem>
           <p className="cursor-pointer">Upgrade Plan</p>
         </DropdownMenuItem>
