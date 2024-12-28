@@ -1,3 +1,8 @@
+import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +16,30 @@ import { Button } from "@/components/ui/button";
 import { useUser } from "@/hooks/useUser";
 
 const UserButton = () => {
-  const user = useUser((state) => state.user);
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const { user, setUser } = useUser();
+
+  const { mutate: handleLogout, isPending } = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: async () => {
+      const { data } = await axios.get("/api/logout");
+      return data as { message: string };
+    },
+    onSuccess: async (data) => {
+      setUser(null);
+      toast.success(data.message);
+      router.replace("/");
+      await queryClient.invalidateQueries({ queryKey: ["is-logged-in"] });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError && error.response?.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Some error occured. Please try again later!");
+      }
+    },
+  });
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,7 +51,11 @@ const UserButton = () => {
         <DropdownMenuItem>
           <p className="cursor-pointer">Upgrade Plan</p>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer focus:bg-rose-600 focus:text-white">
+        <DropdownMenuItem
+          className="cursor-pointer focus:bg-rose-600 focus:text-white"
+          onClick={() => handleLogout()}
+          disabled={isPending}
+        >
           Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
