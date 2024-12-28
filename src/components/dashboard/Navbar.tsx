@@ -1,34 +1,38 @@
+"use client";
+
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
 import BrandLogo from "@/components/BrandLogo";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import Loader from "@/components/Loader";
+import UserButton from "@/components/UserButton";
+
+import { useUser } from "@/hooks/useUser";
+
+import type { UserType } from "../../../types";
 
 const Navbar = () => {
+  const setUser = useUser((state) => state.setUser);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["is-logged-in"],
+    queryFn: async () => {
+      const { data } = await axios.get("/api/is-logged-in");
+      return data as { user: UserType };
+    },
+  });
+
+  useEffect(() => {
+    if (data?.user) {
+      setUser(data.user);
+    }
+  }, [data]);
   return (
     <nav className="flex justify-between items-center h-[10vh]">
       <BrandLogo />
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button className="rounded-full">A</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>My account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <p className="cursor-pointer">Upgrade Plan</p>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer focus:bg-rose-600 focus:text-white">
-            Logout
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {isLoading ? <Loader size="sm" /> : <UserButton />}
     </nav>
   );
 };
