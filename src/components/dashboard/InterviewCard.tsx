@@ -1,4 +1,5 @@
 import { Trash2 } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
@@ -27,13 +28,18 @@ const InterviewCard = ({ interview }: { interview: InterviewType }) => {
       </div>
 
       {interview.status === "complete" ? (
-        <Button className="w-full" variant={"secondary"}>
-          Results
+        <Button className="w-full" variant={"secondary"} asChild>
+          <Link href={`/dashboard/interviews/${interview.id}/results`}>
+            Results
+          </Link>
         </Button>
       ) : interview.status === "ongoing" ? (
-        <p className="text-sm text-emerald-600 font-semibold text-center">
+        <Button
+          variant={"outline"}
+          className="text-emerald-600 hover:bg-transparent hover:text-emerald-600 font-semibold cursor-auto"
+        >
           Ongoing
-        </p>
+        </Button>
       ) : (
         <Button className="w-full">Start interview</Button>
       )}
