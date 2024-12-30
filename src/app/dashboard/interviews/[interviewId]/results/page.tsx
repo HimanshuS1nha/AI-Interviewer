@@ -37,7 +37,6 @@ const InterviewResults = () => {
     {
       header: "Actions",
       cell: ({ row }) => {
-        const data = row.original;
         return (
           <DropdownMenu>
             <DropdownMenuTrigger>
