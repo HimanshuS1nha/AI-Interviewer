@@ -105,9 +105,12 @@ const Login = () => {
             <p className="text-rose-600 text-sm">{errors.password.message}</p>
           )}
           <div className="flex justify-end">
-            <p className="text-sm text-primary hover:underline delay-100 transition-all cursor-pointer">
+            <Link
+              href={"/forgot-password"}
+              className="text-sm text-primary hover:underline delay-100 transition-all cursor-pointer"
+            >
               Forgot Password?
-            </p>
+            </Link>
           </div>
         </div>
 
