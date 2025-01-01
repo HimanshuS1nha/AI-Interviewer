@@ -51,6 +51,9 @@ const Verify = () => {
         toast.error(error.errors[0].message);
       } else if (error instanceof AxiosError && error.response?.data.error) {
         toast.error(error.response.data.error);
+        if (error.response.status === 403) {
+          router.push(`/verify?email=${email}`);
+        }
       } else {
         toast.error("Some error occured. Please try again later!");
       }

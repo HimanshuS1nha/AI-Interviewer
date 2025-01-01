@@ -48,6 +48,9 @@ const ForgotPassword = () => {
     onError: async (error) => {
       if (error instanceof AxiosError && error.response?.data.error) {
         toast.error(error.response.data.error);
+        if (error.response.status === 403) {
+          router.push(`/verify?email=${getValues("email")}`);
+        }
       } else {
         toast.error("Some error occured. Please try again later!");
       }

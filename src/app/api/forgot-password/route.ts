@@ -15,6 +15,12 @@ export const POST = async (req: NextRequest) => {
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
+    if (!user.isEmailVerified) {
+      return NextResponse.json(
+        { error: "Verify your email first" },
+        { status: 403 }
+      );
+    }
 
     await createAndSendOtp(email);
 
