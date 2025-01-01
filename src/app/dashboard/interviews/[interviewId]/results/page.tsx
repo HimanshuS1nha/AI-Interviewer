@@ -2,6 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVertical } from "lucide-react";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 
 import { DataTable } from "@/components/ui/data-table";
 import {
@@ -20,6 +22,8 @@ type CandidateResults = {
 };
 
 const InterviewResults = () => {
+  const params = useParams() as { interviewId: string };
+
   const columns: ColumnDef<CandidateResults>[] = [
     {
       accessorKey: "email",
@@ -37,6 +41,7 @@ const InterviewResults = () => {
     {
       header: "Actions",
       cell: ({ row }) => {
+        const data = row.original;
         return (
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -45,7 +50,13 @@ const InterviewResults = () => {
             <DropdownMenuContent>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  href={`/dashboard/interviews/${params.interviewId}/results/${data.id}`}
+                >
+                  View
+                </Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
