@@ -3,6 +3,9 @@
 import { useRouter, useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -30,6 +33,30 @@ const InterviewLogin = () => {
     },
     resolver: zodResolver(interviewLoginValidatorClient),
   });
+
+  const { mutate: handleLogin, isPending } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: async (values: interviewLoginValidatorClientType) => {
+      const { data } = await axios.post(`/api/interview-login`, {
+        ...values,
+        interviewId: params.interviewId,
+      });
+
+      return data as { message: string };
+    },
+    onSuccess: async (data) => {
+      toast.success(data.message);
+      reset();
+      router.replace(`/interview/${params.interviewId}/start`);
+    },
+    onError: async (error) => {
+      if (error instanceof AxiosError && error.response?.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Some error occured. Please try again later!");
+      }
+    },
+  });
   return (
     <section className="w-full h-[100dvh] flex items-center justify-center bg-gray-100">
       <div className="bg-white w-[30%] py-7 rounded-xl flex flex-col justify-center items-center gap-y-7 shadow shadow-gray-500">
@@ -40,7 +67,10 @@ const InterviewLogin = () => {
             <p className="text-sm text-gray-700">to start the interview</p>
           </div>
 
-          <form className="flex flex-col gap-y-6">
+          <form
+            className="flex flex-col gap-y-6"
+            onSubmit={handleSubmit((data) => handleLogin(data))}
+          >
             <div className="flex flex-col gap-y-3">
               <Label htmlFor="email" className="ml-1">
                 Email
@@ -73,7 +103,9 @@ const InterviewLogin = () => {
               )}
             </div>
 
-            <Button type="submit">Login</Button>
+            <Button type="submit" disabled={isPending}>
+              {isPending ? "Please wait..." : "Login"}
+            </Button>
           </form>
         </div>
       </div>
