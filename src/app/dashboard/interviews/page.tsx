@@ -1,10 +1,17 @@
+"use client";
+
+import { useState } from "react";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import InterviewCard from "@/components/dashboard/InterviewCard";
+import CreateInterviewDialog from "@/components/dashboard/CreateInterviewDialog";
 
 import type { InterviewType } from "../../../../types";
 
 const Interviews = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
   const dummyInterviews: InterviewType[] = [
     {
       id: "1",
@@ -27,9 +34,14 @@ const Interviews = () => {
   ];
   return (
     <section className="mt-6 flex flex-col gap-y-6">
+      <CreateInterviewDialog
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+      />
+
       <div className="flex gap-x-4">
         <Input placeholder="Search by job title..." />
-        <Button>New Interview</Button>
+        <Button onClick={() => setIsVisible(true)}>New Interview</Button>
       </div>
 
       <div className="flex gap-4 items-center flex-wrap">
