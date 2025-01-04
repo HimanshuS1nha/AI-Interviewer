@@ -2,6 +2,9 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +32,9 @@ const CreateInterviewDialog = ({
 }) => {
   const {
     register,
+    handleSubmit,
     formState: { errors },
+    reset,
     setValue,
   } = useForm<createCompanyInterviewValidatorType>({
     defaultValues: {
@@ -43,6 +48,29 @@ const CreateInterviewDialog = ({
     resolver: zodResolver(createCompanyInterviewValidator),
   });
 
+  const { mutate: hanleCreateInterview, isPending } = useMutation({
+    mutationKey: ["create-interview"],
+    mutationFn: async (values: createCompanyInterviewValidatorType) => {
+      const { data } = await axios.post(`/api/create-interview`, {
+        ...values,
+      });
+
+      return data as { message: string };
+    },
+    onSuccess: async (data) => {
+      toast.success(data.message);
+      reset();
+      setIsVisible(false);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError && error.response?.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Some error occured. Please try again later!");
+      }
+    },
+  });
+
   return (
     <Dialog open={isVisible} onOpenChange={() => setIsVisible((prev) => !prev)}>
       <DialogContent className="max-h-[90%] overflow-y-auto">
@@ -51,7 +79,10 @@ const CreateInterviewDialog = ({
           <DialogDescription>Click create when you are done.</DialogDescription>
         </DialogHeader>
 
-        <form className="flex flex-col gap-y-6">
+        <form
+          className="flex flex-col gap-y-6"
+          onSubmit={handleSubmit((data) => hanleCreateInterview(data))}
+        >
           <div className="flex flex-col gap-y-3">
             <Label className="ml-1" htmlFor="jobTitle">
               Job Title
@@ -160,7 +191,9 @@ const CreateInterviewDialog = ({
             )}
           </div>
 
-          <Button type="submit">Create</Button>
+          <Button type="submit" disabled={isPending}>
+            {isPending ? "Please wait..." : "Create"}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
