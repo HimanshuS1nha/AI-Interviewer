@@ -19,9 +19,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 import {
-  createCompanyInterviewValidator,
-  type createCompanyInterviewValidatorType,
-} from "@/validators/create-company-interview-validator";
+  createInterviewValidator,
+  type createInterviewValidatorType,
+} from "@/validators/create-interview-validator";
 
 const CreateInterviewDialog = ({
   isVisible,
@@ -36,7 +36,7 @@ const CreateInterviewDialog = ({
     formState: { errors },
     reset,
     setValue,
-  } = useForm<createCompanyInterviewValidatorType>({
+  } = useForm<createInterviewValidatorType>({
     defaultValues: {
       candidatesEmails: [],
       experience: "",
@@ -45,12 +45,12 @@ const CreateInterviewDialog = ({
       techStack: "",
       time: "",
     },
-    resolver: zodResolver(createCompanyInterviewValidator),
+    resolver: zodResolver(createInterviewValidator),
   });
 
   const { mutate: hanleCreateInterview, isPending } = useMutation({
     mutationKey: ["create-interview"],
-    mutationFn: async (values: createCompanyInterviewValidatorType) => {
+    mutationFn: async (values: createInterviewValidatorType) => {
       const { data } = await axios.post(`/api/create-interview`, {
         ...values,
       });

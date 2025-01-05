@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const createCompanyInterviewValidator = z.object({
+export const createInterviewValidator = z.object({
   jobTitle: z
     .string({ required_error: "Job title is required" })
     .trim()
@@ -26,6 +26,6 @@ export const createCompanyInterviewValidator = z.object({
     .min(1, { message: "Add atleast one candidate email" }),
 });
 
-export type createCompanyInterviewValidatorType = z.infer<
-  typeof createCompanyInterviewValidator
+export type createInterviewValidatorType = z.infer<
+  typeof createInterviewValidator
 >;
