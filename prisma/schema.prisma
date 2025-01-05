@@ -25,13 +25,13 @@ enum InterviewStatus {
 }
 
 model Users {
-  id                 String   @id @default(uuid())
-  name               String
-  email              String   @unique
-  password           String
-  isEmailVerified    Boolean  @default(false)
-  numberOfInterviews Int      @default(1)
-  userPlan           UserPlan @default(BASIC)
+  id                          String   @id @default(uuid())
+  name                        String
+  email                       String   @unique
+  password                    String
+  isEmailVerified             Boolean  @default(false)
+  remainingNumberOfInterviews Int      @default(1)
+  userPlan                    UserPlan @default(BASIC)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -79,9 +79,9 @@ model Candidates {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  interviewId       String
-  interview         Interviews          @relation(references: [id], fields: [interviewId], onDelete: Cascade)
-  
+  interviewId String
+  interview   Interviews @relation(references: [id], fields: [interviewId], onDelete: Cascade)
+
   CandidatesAnswers CandidatesAnswers[]
 }
 
