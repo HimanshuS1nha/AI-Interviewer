@@ -54,7 +54,7 @@ const UserButton = () => {
         <DropdownMenuSeparator />
         {pathname === "/" && (
           <DropdownMenuItem asChild>
-            <Link href={"/dashboard"} className="cursor-pointer">
+            <Link href={"/dashboard/interviews"} className="cursor-pointer">
               Go to dashboard
             </Link>
           </DropdownMenuItem>
