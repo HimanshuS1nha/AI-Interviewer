@@ -13,27 +13,102 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserPlan {
+  BASIC
+  PRO
+}
+
+enum InterviewStatus {
+  NOT_STARTED
+  ONGOING
+  COMPLETE
+}
+
 model Users {
-  id                 String  @id @default(uuid())
+  id                 String   @id @default(uuid())
   name               String
-  email              String  @unique
+  email              String   @unique
   password           String
-  isEmailVerified    Boolean @default(false)
-  numberOfInterviews Int     @default(1)
+  isEmailVerified    Boolean  @default(false)
+  numberOfInterviews Int      @default(1)
+  userPlan           UserPlan @default(BASIC)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  OTP Otp?
+  OTP        Otp?
+  Interviews Interviews[]
 }
 
 model Otp {
   id  String @id @default(uuid())
   otp Int
 
-  expires DateTime
+  expires   DateTime
   createdAt DateTime @default(now())
 
   userEmail String @unique
   user      Users  @relation(references: [email], fields: [userEmail], onDelete: Cascade)
+}
+
+model Interviews {
+  id             String          @id @default(uuid())
+  jobTitle       String
+  jobDescription String
+  techStack      String
+  experience     Int
+  time           DateTime
+  status         InterviewStatus @default(NOT_STARTED)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userEmail String
+  user      Users  @relation(references: [email], fields: [userEmail], onDelete: Cascade)
+
+  Candidates Candidates[]
+  Questions  Questions[]
+}
+
+model Candidates {
+  id               String  @id @default(uuid())
+  email            String
+  password         String
+  isInterviewGiven Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  interviewId       String
+  interview         Interviews          @relation(references: [id], fields: [interviewId], onDelete: Cascade)
+  
+  CandidatesAnswers CandidatesAnswers[]
+}
+
+model Questions {
+  id       String @id @default(uuid())
+  question String
+
+  createdAt DateTime @default(now())
+
+  interviewId String
+  interview   Interviews @relation(references: [id], fields: [interviewId], onDelete: Cascade)
+
+  CandidatesAnswers CandidatesAnswers[]
+}
+
+model CandidatesAnswers {
+  id       String @id @default(uuid())
+  answer   String
+  rating   Int
+  feedback String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  candidateId String
+  candidate   Candidates @relation(references: [id], fields: [candidateId], onDelete: Cascade)
+
+  questionId String
+  question   Questions @relation(references: [id], fields: [questionId], onDelete: Cascade)
 }
