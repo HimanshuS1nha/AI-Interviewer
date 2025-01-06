@@ -4,6 +4,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { EllipsisVertical } from "lucide-react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 import { DataTable } from "@/components/ui/data-table";
 import {
@@ -14,6 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Loader from "@/components/Loader";
 
 type CandidateResults = {
   id: string;
@@ -64,30 +68,36 @@ const InterviewResults = () => {
     },
   ];
 
-  const data: CandidateResults[] = [
-    {
-      email: "demo1@demo.com",
-      id: "1",
-      rating: 7,
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["get-results"],
+    queryFn: async () => {
+      const { data } = await axios.get(
+        `/api/get-results/${params.interviewId}`
+      );
+
+      return data as { results: CandidateResults[] };
     },
-    {
-      email: "demo2@demo.com",
-      id: "2",
-      rating: 4,
-    },
-    {
-      email: "demo3@demo.com",
-      id: "4",
-      rating: 10,
-    },
-  ];
+  });
+  if (error) {
+    if (error instanceof AxiosError && error.response?.data.error) {
+      toast.error(error.response.data.error);
+    } else {
+      toast.error("Some error occured. Please try again later!");
+    }
+  }
   return (
     <section className="mt-6 flex flex-col gap-y-6">
       <h1 className="text-2xl text-primary font-semibold text-center">
         Results for Interview
       </h1>
 
-      <DataTable columns={columns} data={data} />
+      {isLoading ? (
+        <Loader size="lg" />
+      ) : data && data.results.length !== 0 ? (
+        <DataTable columns={columns} data={data.results} />
+      ) : (
+        <p>No data to show</p>
+      )}
     </section>
   );
 };
