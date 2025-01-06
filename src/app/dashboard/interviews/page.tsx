@@ -68,9 +68,9 @@ const Interviews = () => {
         <div className="flex justify-center items-center">
           <Loader size="lg" />
         </div>
-      ) : interviews.length > 0 ? (
+      ) : filteredInterviews.length > 0 ? (
         <div className="flex gap-4 items-center flex-wrap">
-          {interviews.map((interview) => {
+          {filteredInterviews.map((interview) => {
             return <InterviewCard interview={interview} key={interview.id} />;
           })}
         </div>
