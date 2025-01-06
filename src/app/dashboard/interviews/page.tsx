@@ -16,6 +16,17 @@ import type { InterviewType } from "../../../../types";
 const Interviews = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [interviews, setInterviews] = useState<InterviewType[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredInterviews = interviews.filter((interview) => {
+    if (searchQuery === "") {
+      return true;
+    } else {
+      return interview.jobTitle
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+    }
+  });
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["get-interviews"],
@@ -45,7 +56,11 @@ const Interviews = () => {
       />
 
       <div className="flex gap-x-4">
-        <Input placeholder="Search by job title..." />
+        <Input
+          placeholder="Search by job title..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
         <Button onClick={() => setIsVisible(true)}>New Interview</Button>
       </div>
 
