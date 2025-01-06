@@ -6,15 +6,8 @@ import prisma from "@/lib/db";
 
 import { getUserByEmail } from "@/helpers/get-user-by-email";
 
-export const GET = async (
-  _: NextRequest,
-  { params }: { params: Promise<{ userType: "user" | "company" }> }
-) => {
+export const GET = async (_: NextRequest) => {
   try {
-    const { userType } = await params;
-    if (userType !== "user" && userType !== "company") {
-      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-    }
     const token = (await cookies()).get("token")?.value;
     if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -23,8 +16,8 @@ export const GET = async (
     const { payload } = (await jwtVerify(
       token,
       new TextEncoder().encode(process.env.JWT_SECRET)
-    )) as { payload: { email: string; role: "user" | "company" } };
-    if (!payload.email || payload.role !== userType) {
+    )) as { payload: { email: string } };
+    if (!payload.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
