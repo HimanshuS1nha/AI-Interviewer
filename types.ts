@@ -8,5 +8,5 @@ export type InterviewType = {
   id: string;
   jobTitle: string;
   experience: number;
-  status: "not_started" | "ongoing" | "complete";
+  status: "NOT_STARTED" | "ONGOING" | "COMPLETE";
 };

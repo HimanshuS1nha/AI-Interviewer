@@ -27,13 +27,13 @@ const InterviewCard = ({ interview }: { interview: InterviewType }) => {
         </p>
       </div>
 
-      {interview.status === "complete" ? (
+      {interview.status === "COMPLETE" ? (
         <Button className="w-full" variant={"secondary"} asChild>
           <Link href={`/dashboard/interviews/${interview.id}/results`}>
             Results
           </Link>
         </Button>
-      ) : interview.status === "ongoing" ? (
+      ) : interview.status === "ONGOING" ? (
         <Button
           variant={"outline"}
           className="text-emerald-600 hover:bg-transparent hover:text-emerald-600 font-semibold cursor-auto"
