@@ -1,12 +1,12 @@
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
 import prisma from "@/lib/db";
 
 import { getUserByEmail } from "@/helpers/get-user-by-email";
 
-export const GET = async (_: NextRequest) => {
+export const GET = async () => {
   try {
     const token = (await cookies()).get("token")?.value;
     if (!token) {
