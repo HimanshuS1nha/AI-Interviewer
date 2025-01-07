@@ -25,7 +25,20 @@ export const middleware = async (req: NextRequest) => {
         return NextResponse.redirect(new URL("/login", req.url));
       }
     } else {
-      //! Pending
+      const interviewToken = (await cookies()).get("interview-token")?.value;
+      if (!interviewToken) {
+        if (req.nextUrl.pathname.split("/").length < 4) {
+          return NextResponse.next();
+        }
+        const interviewId = req.nextUrl.pathname.split("/")[2];
+        if (req.nextUrl.pathname.split("/")[3] === "login") {
+          return NextResponse.next();
+        }
+        return NextResponse.redirect(
+          new URL(`/interview/${interviewId}/login`, req.url)
+        );
+      }
+
       return NextResponse.next();
     }
   }

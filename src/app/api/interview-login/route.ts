@@ -4,8 +4,9 @@ import { SignJWT } from "jose";
 import { ZodError } from "zod";
 import { compare } from "bcrypt";
 
-import { getCandidate } from "@/helpers/get-candidate";
 import prisma from "@/lib/db";
+
+import { getCandidate } from "@/helpers/get-candidate";
 
 import { interviewLoginValidatorServer } from "@/validators/interview-login-validator";
 
