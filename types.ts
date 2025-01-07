@@ -10,3 +10,10 @@ export type InterviewType = {
   experience: number;
   status: "NOT_STARTED" | "ONGOING" | "COMPLETE";
 };
+
+export type QuestionType = {
+  id: string;
+  interviewId: string;
+  question: string;
+  answer?: string;
+};
