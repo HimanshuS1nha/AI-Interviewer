@@ -57,6 +57,13 @@ export const POST = async (req: NextRequest) => {
       );
     }
 
+    if (candidate.isInterviewGiven) {
+      return NextResponse.json(
+        { error: "You have already given this interview" },
+        { status: 409 }
+      );
+    }
+
     const token = await new SignJWT({ email: candidate.email })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
