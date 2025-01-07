@@ -5,8 +5,6 @@ import { useState } from "react";
 import Questions from "@/components/interview/Questions";
 import UserVideo from "@/components/interview/UserVideo";
 
-import type { QuestionType } from "../../../../../types";
-
 const InterviewStart = () => {
   const [activeQuestion, setActiveQuestion] = useState(0);
   return (
