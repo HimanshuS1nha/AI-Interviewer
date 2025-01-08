@@ -16,32 +16,32 @@ export const middleware = async (req: NextRequest) => {
     }
   }
 
-  // if (protectedRoutes.includes(pathname)) {
-  //   if (pathname === "dashboard") {
-  //     const token = (await cookies()).get("token")?.value;
-  //     if (token) {
-  //       return NextResponse.next();
-  //     } else {
-  //       return NextResponse.redirect(new URL("/login", req.url));
-  //     }
-  //   } else {
-  //     const interviewToken = (await cookies()).get("interview-token")?.value;
-  //     if (!interviewToken) {
-  //       if (req.nextUrl.pathname.split("/").length < 4) {
-  //         return NextResponse.next();
-  //       }
-  //       const interviewId = req.nextUrl.pathname.split("/")[2];
-  //       if (req.nextUrl.pathname.split("/")[3] === "login") {
-  //         return NextResponse.next();
-  //       }
-  //       return NextResponse.redirect(
-  //         new URL(`/interview/${interviewId}/login`, req.url)
-  //       );
-  //     }
+  if (protectedRoutes.includes(pathname)) {
+    if (pathname === "dashboard") {
+      const token = (await cookies()).get("token")?.value;
+      if (token) {
+        return NextResponse.next();
+      } else {
+        return NextResponse.redirect(new URL("/login", req.url));
+      }
+    } else {
+      const interviewToken = (await cookies()).get("interview-token")?.value;
+      if (!interviewToken) {
+        if (req.nextUrl.pathname.split("/").length < 4) {
+          return NextResponse.next();
+        }
+        const interviewId = req.nextUrl.pathname.split("/")[2];
+        if (req.nextUrl.pathname.split("/")[3] === "login") {
+          return NextResponse.next();
+        }
+        return NextResponse.redirect(
+          new URL(`/interview/${interviewId}/login`, req.url)
+        );
+      }
 
-  //     return NextResponse.next();
-  //   }
-  // }
+      return NextResponse.next();
+    }
+  }
 
   return NextResponse.next();
 };
