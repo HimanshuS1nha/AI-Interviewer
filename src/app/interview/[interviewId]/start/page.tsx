@@ -21,10 +21,6 @@ const InterviewStart = () => {
   return (
     <section className="flex flex-col gap-y-6 px-32">
       {isMicrophoneAccessGiven ? (
-        <p className="text-center text-rose-600 font-bold">
-          Microphone permission is required to proceed
-        </p>
-      ) : (
         <>
           <h1 className="text-2xl text-primary font-semibold text-center">
             React.js Interview
@@ -36,6 +32,10 @@ const InterviewStart = () => {
             <UserVideo />
           </div>
         </>
+      ) : (
+        <p className="text-center text-rose-600 font-bold">
+          Microphone permission is required to proceed
+        </p>
       )}
     </section>
   );
