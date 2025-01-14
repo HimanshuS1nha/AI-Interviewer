@@ -18,7 +18,7 @@ import type { UserType } from "../../../types";
 const Navbar = () => {
   const { user, setUser } = useUser();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["is-logged-in"],
     queryFn: async () => {
       const { data } = await axios.get("/api/is-logged-in");
@@ -32,6 +32,12 @@ const Navbar = () => {
       setUser(data.user);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      setUser(null);
+    }
+  }, [error]);
   return (
     <nav className="sticky inset-x-0 top-0 z-20 flex justify-between h-[8vh] items-center bg-white/75 border-b border-b-gray-200 px-44 backdrop-blur-lg">
       <BrandLogo />
