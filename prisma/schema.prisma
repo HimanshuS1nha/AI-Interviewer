@@ -90,8 +90,9 @@ model Candidates {
 }
 
 model Questions {
-  id       String @id @default(uuid())
-  question String
+  id             String @id @default(uuid())
+  question       String
+  questionNumber Int
 
   createdAt DateTime @default(now())
 
@@ -99,6 +100,8 @@ model Questions {
   interview   Interviews @relation(references: [id], fields: [interviewId], onDelete: Cascade)
 
   CandidatesAnswers CandidatesAnswers[]
+
+  @@unique([interviewId, questionNumber])
 }
 
 model CandidatesAnswers {

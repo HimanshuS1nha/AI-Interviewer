@@ -31,10 +31,10 @@ const UserButton = () => {
       return data as { message: string };
     },
     onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ["is-logged-in"] });
       setUser(null);
       toast.success(data.message);
       router.replace("/");
-      await queryClient.invalidateQueries({ queryKey: ["is-logged-in"] });
     },
     onError: (error) => {
       if (error instanceof AxiosError && error.response?.data.error) {

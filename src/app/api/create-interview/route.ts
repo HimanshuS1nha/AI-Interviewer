@@ -85,11 +85,12 @@ export const POST = async (req: NextRequest) => {
       parseInt(experience)
     );
 
-    for (const question of questions) {
+    for (let i = 0; i < questions.length; i++) {
       await prisma.questions.create({
         data: {
           interviewId: interview.id,
-          question,
+          question: questions[i],
+          questionNumber: i + 1,
         },
       });
     }
