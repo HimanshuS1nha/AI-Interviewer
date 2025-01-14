@@ -75,7 +75,7 @@ const Interviews = () => {
           })}
         </div>
       ) : (
-        <p className="text-rose-500 font-bold text-sm">No data to show</p>
+        <p className="text-rose-500 font-bold text-sm text-center">No data to show</p>
       )}
     </section>
   );

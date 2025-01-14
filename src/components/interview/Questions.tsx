@@ -8,13 +8,13 @@ const Questions = ({ activeQuestion }: { activeQuestion: number }) => {
           return (
             <div
               className={`${
-                item === activeQuestion ? "bg-primary" : "bg-gray-300"
+                item === activeQuestion - 1 ? "bg-primary" : "bg-gray-300"
               } px-3 py-1.5 rounded-full`}
               key={item}
             >
               <p
                 className={`text-sm font-medium ${
-                  item === activeQuestion ? "text-white" : ""
+                  item === activeQuestion - 1 ? "text-white" : ""
                 }`}
               >
                 Question {item + 1}

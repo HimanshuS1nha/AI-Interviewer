@@ -52,13 +52,15 @@ model Otp {
 }
 
 model Interviews {
-  id             String          @id @default(uuid())
-  jobTitle       String
-  jobDescription String?
-  techStack      String
-  experience     Int
-  time           DateTime
-  status         InterviewStatus @default(NOT_STARTED)
+  id                  String          @id @default(uuid())
+  jobTitle            String
+  jobDescription      String?
+  techStack           String
+  experience          Int
+  startedAt           DateTime?
+  time                Int
+  isInterviewComplete Boolean         @default(false)
+  status              InterviewStatus @default(NOT_STARTED)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

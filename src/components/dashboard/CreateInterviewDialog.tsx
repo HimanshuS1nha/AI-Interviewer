@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 
@@ -30,6 +30,8 @@ const CreateInterviewDialog = ({
   isVisible: boolean;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -58,6 +60,7 @@ const CreateInterviewDialog = ({
       return data as { message: string };
     },
     onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ["get-interviews"] });
       toast.success(data.message);
       reset();
       setIsVisible(false);

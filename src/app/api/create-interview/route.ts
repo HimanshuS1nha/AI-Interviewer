@@ -61,7 +61,7 @@ export const POST = async (req: NextRequest) => {
         jobDescription,
         jobTitle,
         techStack,
-        time,
+        time: parseInt(time),
         userEmail: user.email,
       },
     });

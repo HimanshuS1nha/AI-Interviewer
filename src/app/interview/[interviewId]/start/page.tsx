@@ -1,13 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import toast from "react-hot-toast";
+import { useSearchParams } from "next/navigation";
 
 import Questions from "@/components/interview/Questions";
 import UserVideo from "@/components/interview/UserVideo";
 
 const InterviewStart = () => {
-  const [activeQuestion, setActiveQuestion] = useState(0);
+  const searchParams = useSearchParams();
+  const questionNumber = searchParams.get("question")
+    ? parseInt(searchParams.get("question")!)
+    : 1;
+
   const [isMicrophoneAccessGiven, setIsMicrophoneAccessGiven] = useState(false);
 
   useEffect(() => {
@@ -27,7 +32,7 @@ const InterviewStart = () => {
           </h1>
 
           <div className="flex w-full h-full gap-x-3">
-            <Questions activeQuestion={activeQuestion} />
+            <Questions activeQuestion={questionNumber} />
 
             <UserVideo />
           </div>
@@ -41,4 +46,12 @@ const InterviewStart = () => {
   );
 };
 
-export default InterviewStart;
+const InterviewStartPage = () => {
+  return (
+    <Suspense>
+      <InterviewStart />
+    </Suspense>
+  );
+};
+
+export default InterviewStartPage;
