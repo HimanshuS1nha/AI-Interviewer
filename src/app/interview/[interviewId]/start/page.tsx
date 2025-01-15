@@ -56,13 +56,11 @@ const InterviewStart = () => {
   }, [data]);
 
   useEffect(() => {
-    if (error && error instanceof AxiosError && error.response?.data.error) {
-      if (error.response.status === 409) {
-        if (error.response.data.questionNumber) {
-          router.replace(
-            `/interview/${params.interviewId}/start?question=${error.response.data.questionNumber}`
-          );
-        }
+    if (error && error instanceof AxiosError && error.response) {
+      if (error.response.status === 409 && error.response.data.questionNumber) {
+        router.replace(
+          `/interview/${params.interviewId}/start?question=${error.response.data.questionNumber}`
+        );
       }
     }
   }, [error]);
