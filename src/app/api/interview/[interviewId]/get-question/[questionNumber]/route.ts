@@ -29,6 +29,12 @@ export const GET = async (
     if (!candidate) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+    if (candidate.isInterviewGiven) {
+      return NextResponse.json(
+        { error: "You have already given the interview" },
+        { status: 401 }
+      );
+    }
 
     const question = await prisma.questions.findFirst({
       where: {
@@ -36,7 +42,11 @@ export const GET = async (
         questionNumber: parseInt(questionNumber),
       },
       include: {
-        CandidatesAnswers: true,
+        CandidatesAnswers: {
+          where: {
+            id: candidate.id,
+          },
+        },
       },
     });
     if (!question) {
@@ -46,11 +56,7 @@ export const GET = async (
       );
     }
 
-    if (
-      question?.CandidatesAnswers.find(
-        (answer) => answer.candidateId === candidate.id
-      )
-    ) {
+    if (question?.CandidatesAnswers.length > 0) {
       return NextResponse.json(
         {
           error: "You have already answered this question",
@@ -66,15 +72,15 @@ export const GET = async (
           questionNumber: i,
         },
         include: {
-          CandidatesAnswers: true,
+          CandidatesAnswers: {
+            where: {
+              id: candidate.id,
+            },
+          },
         },
       });
 
-      if (
-        !question?.CandidatesAnswers.find(
-          (answer) => answer.candidateId === candidate.id
-        )
-      ) {
+      if (question?.CandidatesAnswers.length === 0) {
         return NextResponse.json(
           {
             error: "Please attempt the previous question first",
