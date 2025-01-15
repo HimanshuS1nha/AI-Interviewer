@@ -13,7 +13,5 @@ export type InterviewType = {
 
 export type QuestionType = {
   id: string;
-  interviewId: string;
   question: string;
-  answer?: string;
 };

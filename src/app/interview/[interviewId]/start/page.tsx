@@ -9,6 +9,8 @@ import axios, { AxiosError } from "axios";
 import Questions from "@/components/interview/Questions";
 import UserVideo from "@/components/interview/UserVideo";
 
+import type { QuestionType } from "../../../../../types";
+
 const InterviewStart = () => {
   const router = useRouter();
   const params = useParams() as { interviewId: string };
@@ -18,28 +20,21 @@ const InterviewStart = () => {
     : 1;
 
   const [isMicrophoneAccessGiven, setIsMicrophoneAccessGiven] = useState(false);
-  const [question, setQuestion] = useState<{ id: string; question: string }>();
+  const [question, setQuestion] = useState<QuestionType>();
 
   const { data, error } = useQuery({
     queryKey: [`get-question-${params.interviewId}-${questionNumber}`],
     queryFn: async () => {
       const { data } = await axios.get(
-        `/interview/${params.interviewId}/${questionNumber}`
+        `/api/interview/${params.interviewId}/get-question/${questionNumber}`
       );
 
-      return data as { question: { id: string; question: string } };
+      return data as { question: QuestionType };
     },
   });
   if (error) {
     if (error instanceof AxiosError && error.response?.data.error) {
       toast.error(error.response.data.error);
-      if (error.response.status === 409) {
-        if (error.response.data.questionNumber) {
-          router.replace(
-            `/interview/${params.interviewId}/start?question=${error.response.data.questionNumber}`
-          );
-        }
-      }
     } else {
       toast.error("Some error occured. Please try again later!");
     }
@@ -59,6 +54,18 @@ const InterviewStart = () => {
       setQuestion(data.question);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (error && error instanceof AxiosError && error.response?.data.error) {
+      if (error.response.status === 409) {
+        if (error.response.data.questionNumber) {
+          router.replace(
+            `/interview/${params.interviewId}/start?question=${error.response.data.questionNumber}`
+          );
+        }
+      }
+    }
+  }, [error]);
   return (
     <section className="flex flex-col gap-y-6 px-32">
       {isMicrophoneAccessGiven ? (
@@ -69,7 +76,7 @@ const InterviewStart = () => {
 
           {question && (
             <div className="flex w-full h-full gap-x-3">
-              <Questions activeQuestion={questionNumber} />
+              <Questions activeQuestion={questionNumber} question={question} />
 
               <UserVideo />
             </div>

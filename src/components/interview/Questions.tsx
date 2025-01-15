@@ -1,6 +1,28 @@
-import { Pencil, Volume2 } from "lucide-react";
+"use client";
 
-const Questions = ({ activeQuestion }: { activeQuestion: number }) => {
+import { Pencil, Volume2 } from "lucide-react";
+import toast from "react-hot-toast";
+
+import type { QuestionType } from "../../../types";
+
+const Questions = ({
+  activeQuestion,
+  question,
+}: {
+  activeQuestion: number;
+  question: QuestionType;
+}) => {
+  const speakQuestion = () => {
+    if ("speechSynthesis" in window) {
+      if (window.speechSynthesis.speaking) {
+      } else {
+        const speech = new SpeechSynthesisUtterance(question.question);
+        window.speechSynthesis.speak(speech);
+      }
+    } else {
+      toast.error("Your browser does not support text to speech");
+    }
+  };
   return (
     <div className="w-[60%] bg-gray-100 p-4 rounded-xl flex flex-col gap-y-6">
       <div className="flex gap-2 items-center flex-wrap">
@@ -27,13 +49,12 @@ const Questions = ({ activeQuestion }: { activeQuestion: number }) => {
       <div className="flex flex-col gap-y-4">
         <div className="flex gap-x-2 items-end">
           <p className="font-semibold text-justify">
-            Q{activeQuestion + 1}. Lorem, ipsum dolor sit amet consectetur
-            adipisicing elit. Accusamus, esse? Vitae, dolorum ex. Obcaecati
-            molestias eligendi voluptates nisi, aspernatur iste.
+            Q{activeQuestion}. {question.question}
           </p>
           <Volume2
-            size={24}
+            size={26}
             className="text-black hover:text-primary delay-100 transition-all ml-1.5 cursor-pointer my-1 shrink-0"
+            onClick={speakQuestion}
           />
         </div>
         <div className="flex gap-x-2 items-end">
