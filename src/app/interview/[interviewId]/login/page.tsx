@@ -95,6 +95,7 @@ const InterviewLogin = () => {
                 type="password"
                 id="password"
                 required
+                {...register("password", { required: true })}
               />
               {errors.password && (
                 <p className="text-rose-600 text-sm">
