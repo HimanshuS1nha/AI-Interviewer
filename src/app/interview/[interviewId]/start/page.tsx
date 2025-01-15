@@ -67,7 +67,7 @@ const InterviewStart = () => {
     }
   }, [error]);
   return (
-    <section className="flex flex-col gap-y-6 px-32">
+    <section className="flex flex-col gap-y-6">
       {isMicrophoneAccessGiven ? (
         <>
           <h1 className="text-2xl text-primary font-semibold text-center">
