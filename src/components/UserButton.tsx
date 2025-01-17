@@ -59,8 +59,10 @@ const UserButton = () => {
             </Link>
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem>
-          <p className="cursor-pointer">Upgrade Plan</p>
+        <DropdownMenuItem asChild>
+          <Link href={"/pricing"} className="cursor-pointer">
+            Upgrade Plan
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           className="cursor-pointer focus:bg-rose-600 focus:text-white"
