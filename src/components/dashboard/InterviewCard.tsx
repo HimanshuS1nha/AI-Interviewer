@@ -1,5 +1,6 @@
-import { Trash2 } from "lucide-react";
 import Link from "next/link";
+import { Clipboard, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 
@@ -33,13 +34,26 @@ const InterviewCard = ({ interview }: { interview: InterviewType }) => {
             Results
           </Link>
         </Button>
-      ) : interview.status === "ONGOING" ? (
-        <Button
-          variant={"outline"}
-          className="text-emerald-600 hover:bg-transparent hover:text-emerald-600 font-semibold cursor-auto"
-        >
-          Ongoing
-        </Button>
+      ) : interview.status !== "ONGOING" ? (
+        <div className="flex gap-x-2 items-center">
+          <Button
+            variant={"outline"}
+            className="text-emerald-600 hover:bg-transparent hover:text-emerald-600 font-semibold cursor-auto w-[90%]"
+          >
+            Ongoing
+          </Button>
+          <Button
+            variant={"ghost"}
+            onClick={() => {
+              navigator.clipboard.writeText(
+                `${process.env.NEXT_PUBLIC_URL}/interview/${interview.id}/start`
+              );
+              toast.success("Interview link copied");
+            }}
+          >
+            <Clipboard size={20} />
+          </Button>
+        </div>
       ) : (
         <Button className="w-full">Start interview</Button>
       )}
