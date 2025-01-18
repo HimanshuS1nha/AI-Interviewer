@@ -31,12 +31,36 @@ export const POST = async (req: NextRequest) => {
       if (interview.status === "COMPLETE") {
         return NextResponse.json(
           { error: "Interview has already completed" },
-          { status: 422 }
+          { status: 403 }
         );
       } else {
         return NextResponse.json(
           { error: "Interview has not started yet" },
-          { status: 422 }
+          { status: 403 }
+        );
+      }
+    } else if (interview.status === "ONGOING") {
+      if (!interview.startedAt) {
+        return NextResponse.json(
+          { error: "Interview has not started yet" },
+          { status: 403 }
+        );
+      }
+      const interviewEndTime = new Date(interview.startedAt);
+      interviewEndTime.setHours(interviewEndTime.getHours() + interview.time);
+
+      if (new Date() >= interviewEndTime) {
+        await prisma.interviews.update({
+          where: {
+            id: interview.id,
+          },
+          data: {
+            status: "COMPLETE",
+          },
+        });
+        return NextResponse.json(
+          { error: "Interview has already completed" },
+          { status: 403 }
         );
       }
     }
