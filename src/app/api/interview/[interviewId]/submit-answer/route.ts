@@ -69,6 +69,23 @@ export const POST = async (req: NextRequest) => {
           { status: 403 }
         );
       }
+      const interviewEndTime = new Date(interview.startedAt);
+      interviewEndTime.setHours(interviewEndTime.getHours() + interview.time);
+
+      if (new Date() >= interviewEndTime) {
+        await prisma.interviews.update({
+          where: {
+            id: interview.id,
+          },
+          data: {
+            status: "COMPLETE",
+          },
+        });
+        return NextResponse.json(
+          { error: "Interview has already completed" },
+          { status: 403 }
+        );
+      }
     }
 
     const question = await prisma.questions.findFirst({
