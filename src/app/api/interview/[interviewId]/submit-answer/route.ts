@@ -44,9 +44,29 @@ export const POST = async (req: NextRequest) => {
     });
     if (!interview) {
       return NextResponse.json(
-        { error: "Question not found" },
+        { error: "Interview not found" },
         { status: 404 }
       );
+    }
+    if (interview.status !== "ONGOING") {
+      if (interview.status === "COMPLETE") {
+        return NextResponse.json(
+          { error: "Interview has already completed" },
+          { status: 403 }
+        );
+      } else {
+        return NextResponse.json(
+          { error: "Interview has not started yet" },
+          { status: 403 }
+        );
+      }
+    } else if (interview.status === "ONGOING") {
+      if (!interview.startedAt) {
+        return NextResponse.json(
+          { error: "Interview has not started yet" },
+          { status: 403 }
+        );
+      }
     }
 
     const question = await prisma.questions.findFirst({
