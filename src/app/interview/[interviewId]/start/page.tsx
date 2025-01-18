@@ -61,6 +61,8 @@ const InterviewStart = () => {
         router.replace(
           `/interview/${params.interviewId}/start?question=${error.response.data.questionNumber}`
         );
+      } else if (error.response.status === 403) {
+        router.replace(`/interview/${params.interviewId}/login`);
       }
     }
   }, [error]);

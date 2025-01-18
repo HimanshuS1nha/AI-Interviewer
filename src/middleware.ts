@@ -31,12 +31,12 @@ export const middleware = async (req: NextRequest) => {
           return NextResponse.next();
         }
         const interviewId = req.nextUrl.pathname.split("/")[2];
-        if (req.nextUrl.pathname.split("/")[3] === "login") {
-          return NextResponse.next();
+        if (req.nextUrl.pathname.split("/")[3] === "start") {
+          return NextResponse.redirect(
+            new URL(`/interview/${interviewId}/login`, req.url)
+          );
         }
-        return NextResponse.redirect(
-          new URL(`/interview/${interviewId}/login`, req.url)
-        );
+        return NextResponse.next();
       }
 
       return NextResponse.next();

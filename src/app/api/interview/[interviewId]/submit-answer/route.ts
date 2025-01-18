@@ -49,6 +49,7 @@ export const POST = async (req: NextRequest) => {
       );
     }
     if (interview.status !== "ONGOING") {
+      (await cookies()).delete("interview-token");
       if (interview.status === "COMPLETE") {
         return NextResponse.json(
           { error: "Interview has already completed" },
@@ -62,6 +63,7 @@ export const POST = async (req: NextRequest) => {
       }
     } else if (interview.status === "ONGOING") {
       if (!interview.startedAt) {
+        (await cookies()).delete("interview-token");
         return NextResponse.json(
           { error: "Interview has not started yet" },
           { status: 403 }
@@ -153,6 +155,8 @@ export const POST = async (req: NextRequest) => {
           isInterviewGiven: true,
         },
       });
+
+      (await cookies()).delete("interview-token");
 
       return NextResponse.json({
         message: "Answer submitted successfully",
