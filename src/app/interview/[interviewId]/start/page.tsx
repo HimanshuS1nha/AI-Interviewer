@@ -5,9 +5,13 @@ import toast from "react-hot-toast";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
+import dynamic from "next/dynamic";
 
 import Questions from "@/components/interview/Questions";
-import UserVideo from "@/components/interview/UserVideo";
+
+const UserVideo = dynamic(() => import("@/components/interview/UserVideo"), {
+  ssr: false,
+});
 
 import type { QuestionType } from "../../../../../types";
 
@@ -21,6 +25,7 @@ const InterviewStart = () => {
 
   const [isMicrophoneAccessGiven, setIsMicrophoneAccessGiven] = useState(false);
   const [question, setQuestion] = useState<QuestionType>();
+  const [answer, setAnswer] = useState("");
 
   const { data, error } = useQuery({
     queryKey: [`get-question-${params.interviewId}-${questionNumber}`],
@@ -78,7 +83,7 @@ const InterviewStart = () => {
             <div className="flex w-full h-full gap-x-3">
               <Questions activeQuestion={questionNumber} question={question} />
 
-              <UserVideo />
+              <UserVideo setAnswer={setAnswer} answer={answer} />
             </div>
           )}
         </>
