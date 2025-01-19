@@ -110,12 +110,28 @@ export const POST = async (req: NextRequest) => {
     }
 
     if (question?.CandidatesAnswers.length > 0) {
-      return NextResponse.json(
-        {
-          error: "You have already answered this question",
-        },
-        { status: 409 }
-      );
+      if (questionNumber === 5) {
+        await prisma.candidates.update({
+          where: {
+            id: candidate.id,
+          },
+          data: {
+            isInterviewGiven: true,
+          },
+        });
+        return NextResponse.json(
+          { error: "You have already given the interview" },
+          { status: 401 }
+        );
+      } else {
+        return NextResponse.json(
+          {
+            error: "You have already answered this question",
+            questionNumber: questionNumber + 1,
+          },
+          { status: 409 }
+        );
+      }
     }
 
     for (let i = 1; i < questionNumber; i++) {
