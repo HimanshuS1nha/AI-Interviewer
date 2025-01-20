@@ -2,8 +2,6 @@ import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
-import { generate } from "otp-generator";
-import { hash } from "bcrypt";
 
 import prisma from "@/lib/db";
 
@@ -66,17 +64,14 @@ export const POST = async (req: NextRequest) => {
       },
     });
 
-    for (const candidateEmail of candidatesEmails) {
-      const password = generate(10);
-      const hashedPassword = await hash(password, 10);
-      await prisma.candidates.create({
-        data: {
-          password: hashedPassword,
+    await prisma.candidates.createMany({
+      data: candidatesEmails.map((candidateEmail) => {
+        return {
           email: candidateEmail,
           interviewId: interview.id,
-        },
-      });
-    }
+        };
+      }),
+    });
 
     const questions = await generateQuestions(
       jobTitle,

@@ -17,6 +17,6 @@ export const sendEmail = async (email: string, otp: number) => {
     from: process.env.SMTP_EMAIL,
     to: email,
     subject: "Verify Your Email",
-    html: `<p>Your otp is: ${otp}</p>`,
+    html: `<p>Your otp is: ${otp}. It will expire in 5 mins.</p>`,
   });
 };

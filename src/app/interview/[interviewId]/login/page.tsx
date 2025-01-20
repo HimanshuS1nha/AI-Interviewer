@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import { ZodError } from "zod";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import BrandLogo from "@/components/BrandLogo";
 
+import { emailValidator } from "@/validators/email-validator";
 import {
   interviewLoginValidator,
   type interviewLoginValidatorType,
@@ -42,10 +44,41 @@ const InterviewLogin = () => {
       email: "",
       otp: "",
     },
-    resolver: zodResolver(interviewLoginValidator),
+    resolver: zodResolver(
+      isOtpGenerated ? interviewLoginValidator : emailValidator
+    ),
   });
 
-  const { mutate: handleLogin, isPending } = useMutation({
+  const { mutate: handleSendOtp, isPending: sendOtpPending } = useMutation({
+    mutationKey: ["send-otp"],
+    mutationFn: async () => {
+      const parsedData = await emailValidator.parseAsync({
+        email: getValues("email"),
+      });
+
+      const { data } = await axios.post(
+        `/api/interview/${params.interviewId}/send-otp`,
+        { ...parsedData }
+      );
+
+      return data as { message: string };
+    },
+    onSuccess: async (data) => {
+      toast.success(data.message);
+      setIsOtpGenerated(true);
+    },
+    onError: (error) => {
+      if (error instanceof ZodError) {
+        toast.error(error.errors[0].message);
+      } else if (error instanceof AxiosError && error.response?.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Some error occured. Please try again later!");
+      }
+    },
+  });
+
+  const { mutate: handleLogin, isPending: loginPending } = useMutation({
     mutationKey: ["login"],
     mutationFn: async (values: interviewLoginValidatorType) => {
       const { data } = await axios.post(`/api/interview-login`, {
@@ -60,7 +93,7 @@ const InterviewLogin = () => {
       reset();
       router.replace(`/interview/${params.interviewId}/start`);
     },
-    onError: async (error) => {
+    onError: (error) => {
       if (error instanceof AxiosError && error.response?.data.error) {
         toast.error(error.response.data.error);
       } else {
@@ -80,7 +113,13 @@ const InterviewLogin = () => {
 
           <form
             className="flex flex-col gap-y-6"
-            onSubmit={handleSubmit((data) => handleLogin(data))}
+            onSubmit={handleSubmit((data) => {
+              if (isOtpGenerated) {
+                handleLogin(data);
+              } else {
+                handleSendOtp();
+              }
+            })}
           >
             <div className="flex flex-col gap-y-3">
               <Label htmlFor="email" className="ml-1">
@@ -125,8 +164,8 @@ const InterviewLogin = () => {
               </div>
             )}
 
-            <Button type="submit" disabled={isPending}>
-              {isPending
+            <Button type="submit" disabled={sendOtpPending || loginPending}>
+              {loginPending || sendOtpPending
                 ? "Please wait..."
                 : isOtpGenerated
                 ? "Login"
