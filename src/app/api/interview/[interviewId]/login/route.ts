@@ -1,20 +1,23 @@
-import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { SignJWT } from "jose";
+import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
-import { compare } from "bcrypt";
 
 import prisma from "@/lib/db";
 
 import { getCandidate } from "@/helpers/get-candidate";
 
-import { interviewLoginValidatorServer } from "@/validators/interview-login-validator";
+import { interviewLoginValidator } from "@/validators/interview-login-validator";
 
-export const POST = async (req: NextRequest) => {
+export const POST = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ interviewId: string }> }
+) => {
   try {
+    const { interviewId } = await params;
+
     const data = await req.json();
-    const { email, interviewId, password } =
-      await interviewLoginValidatorServer.parseAsync(data);
+    const { email, otp } = await interviewLoginValidator.parseAsync(data);
 
     const interview = await prisma.interviews.findUnique({
       where: {
@@ -72,21 +75,33 @@ export const POST = async (req: NextRequest) => {
         { status: 401 }
       );
     }
-
-    const doesPasswordMatch = await compare(password, candidate.password);
-    if (!doesPasswordMatch) {
-      return NextResponse.json(
-        { error: "Invalid credentials" },
-        { status: 401 }
-      );
-    }
-
     if (candidate.isInterviewGiven) {
       return NextResponse.json(
         { error: "You have already given this interview" },
         { status: 409 }
       );
     }
+
+    const otpEntry = await prisma.candidateLoginOtp.findUnique({
+      where: {
+        candidateId: candidate.id,
+      },
+    });
+    if (!otpEntry) {
+      return NextResponse.json({ error: "OTP not found" }, { status: 404 });
+    }
+    if (otpEntry.otp !== parseInt(otp)) {
+      return NextResponse.json({ error: "Invalid OTP" }, { status: 401 });
+    }
+    if (otpEntry.expires < new Date()) {
+      return NextResponse.json({ error: "OTP has expired" }, { status: 401 });
+    }
+
+    await prisma.candidateLoginOtp.deleteMany({
+      where: {
+        candidateId: candidate.id,
+      },
+    });
 
     const token = await new SignJWT({ email: candidate.email })
       .setProtectedHeader({ alg: "HS256" })
@@ -99,8 +114,9 @@ export const POST = async (req: NextRequest) => {
       path: "/",
       maxAge: 60 * 60 * 24,
     });
+
     return NextResponse.json(
-      { message: "Logged in successfully" },
+      { message: "OTP sent successfully" },
       { status: 200 }
     );
   } catch (error) {

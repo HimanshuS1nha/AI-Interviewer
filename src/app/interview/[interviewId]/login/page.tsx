@@ -81,10 +81,12 @@ const InterviewLogin = () => {
   const { mutate: handleLogin, isPending: loginPending } = useMutation({
     mutationKey: ["login"],
     mutationFn: async (values: interviewLoginValidatorType) => {
-      const { data } = await axios.post(`/api/interview-login`, {
-        ...values,
-        interviewId: params.interviewId,
-      });
+      const { data } = await axios.post(
+        `/api/interview/${params.interviewId}/login`,
+        {
+          ...values,
+        }
+      );
 
       return data as { message: string };
     },
