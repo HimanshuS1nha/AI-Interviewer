@@ -9,6 +9,7 @@ import { sendEmail } from "@/lib/send-email";
 import { getCandidate } from "@/helpers/get-candidate";
 
 import { emailValidator } from "@/validators/email-validator";
+import { createAndSendCandidateLoginOtp } from "@/helpers/create-and-send-candidate-login-otp";
 
 export const POST = async (
   req: NextRequest,
@@ -83,30 +84,7 @@ export const POST = async (
       );
     }
 
-    const otp = parseInt(
-      generate(6, {
-        digits: true,
-        lowerCaseAlphabets: false,
-        specialChars: false,
-        upperCaseAlphabets: false,
-      })
-    );
-
-    await prisma.candidateLoginOtp.deleteMany({
-      where: {
-        candidateId: candidate.id,
-      },
-    });
-
-    await prisma.candidateLoginOtp.create({
-      data: {
-        candidateId: candidate.id,
-        otp,
-        expires: new Date(Date.now() + 1000 * 60 * 5),
-      },
-    });
-
-    await sendEmail(email, otp);
+    await createAndSendCandidateLoginOtp(candidate.id, candidate.email);
 
     return NextResponse.json(
       { message: "OTP sent successfully" },
