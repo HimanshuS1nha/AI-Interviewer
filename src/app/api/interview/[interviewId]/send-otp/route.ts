@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
-import { generate } from "otp-generator";
 
 import prisma from "@/lib/db";
-
-import { sendEmail } from "@/lib/send-email";
 
 import { getCandidate } from "@/helpers/get-candidate";
 
