@@ -14,16 +14,16 @@ export const interviewLoginValidatorServer = z.object({
     .min(1, { message: "Invalid request" }),
 });
 
-export const interviewLoginValidatorClient = z.object({
+export const interviewLoginValidator = z.object({
   email: z
     .string({ required_error: "Email is required" })
     .email({ message: "Please enter a valid email" }),
-  password: z
-    .string({ required_error: "Password is required" })
+  otp: z
+    .string({ required_error: "OTP is required" })
     .trim()
-    .min(8, { message: "Password must be atleast 8 characters long" }),
+    .length(6, { message: "OTP must be 6 characters long" }),
 });
 
-export type interviewLoginValidatorClientType = z.infer<
-  typeof interviewLoginValidatorClient
+export type interviewLoginValidatorType = z.infer<
+  typeof interviewLoginValidator
 >;

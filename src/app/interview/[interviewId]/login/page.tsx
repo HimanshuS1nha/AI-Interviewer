@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,34 +10,44 @@ import toast from "react-hot-toast";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Button } from "@/components/ui/button";
 import BrandLogo from "@/components/BrandLogo";
 
 import {
-  interviewLoginValidatorClient,
-  type interviewLoginValidatorClientType,
+  interviewLoginValidator,
+  type interviewLoginValidatorType,
 } from "@/validators/interview-login-validator";
 
 const InterviewLogin = () => {
   const router = useRouter();
   const params = useParams() as { interviewId: string };
 
+  const [isOtpGenerated, setIsOtpGenerated] = useState(false);
+
   const {
     register,
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<interviewLoginValidatorClientType>({
+    setValue,
+    getValues,
+  } = useForm<interviewLoginValidatorType>({
     defaultValues: {
       email: "",
-      password: "",
+      otp: "",
     },
-    resolver: zodResolver(interviewLoginValidatorClient),
+    resolver: zodResolver(interviewLoginValidator),
   });
 
   const { mutate: handleLogin, isPending } = useMutation({
     mutationKey: ["login"],
-    mutationFn: async (values: interviewLoginValidatorClientType) => {
+    mutationFn: async (values: interviewLoginValidatorType) => {
       const { data } = await axios.post(`/api/interview-login`, {
         ...values,
         interviewId: params.interviewId,
@@ -86,26 +97,40 @@ const InterviewLogin = () => {
                 <p className="text-rose-600 text-sm">{errors.email.message}</p>
               )}
             </div>
-            <div className="flex flex-col gap-y-3">
-              <Label htmlFor="password" className="ml-1">
-                Password
-              </Label>
-              <Input
-                placeholder="Enter your password"
-                type="password"
-                id="password"
-                required
-                {...register("password", { required: true })}
-              />
-              {errors.password && (
-                <p className="text-rose-600 text-sm">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
+            {isOtpGenerated && (
+              <div className="flex flex-col gap-y-3">
+                <Label htmlFor="password" className="ml-1">
+                  Password
+                </Label>
+                <InputOTP
+                  maxLength={6}
+                  value={getValues("otp")}
+                  onChange={(value) => setValue("otp", value)}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+                {errors.otp && (
+                  <p className="text-rose-600 text-sm">{errors.otp.message}</p>
+                )}
+              </div>
+            )}
 
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Please wait..." : "Login"}
+              {isPending
+                ? "Please wait..."
+                : isOtpGenerated
+                ? "Login"
+                : "Send OTP"}
             </Button>
           </form>
         </div>
