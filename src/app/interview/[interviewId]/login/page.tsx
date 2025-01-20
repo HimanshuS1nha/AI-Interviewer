@@ -138,15 +138,16 @@ const InterviewLogin = () => {
                 <p className="text-rose-600 text-sm">{errors.email.message}</p>
               )}
             </div>
-            {isOtpGenerated && (
+            {!isOtpGenerated && (
               <div className="flex flex-col gap-y-3">
-                <Label htmlFor="password" className="ml-1">
-                  Password
+                <Label htmlFor="otp" className="ml-1">
+                  OTP
                 </Label>
                 <InputOTP
                   maxLength={6}
                   value={getValues("otp")}
                   onChange={(value) => setValue("otp", value)}
+                  id="otp"
                 >
                   <InputOTPGroup>
                     <InputOTPSlot index={0} />
@@ -160,6 +161,19 @@ const InterviewLogin = () => {
                     <InputOTPSlot index={5} />
                   </InputOTPGroup>
                 </InputOTP>
+                <div className="flex justify-end">
+                  <p
+                    className={`text-sm hover:underline delay-100 transition-all cursor-pointer ${
+                      sendOtpPending || loginPending
+                        ? "pointer-events-none text-blue-300"
+                        : "text-primary"
+                    }`}
+                    onClick={() => handleSendOtp()}
+                  >
+                    {sendOtpPending ? "Please wait..." : "Resend OTP"}
+                  </p>
+                </div>
+
                 {errors.otp && (
                   <p className="text-rose-600 text-sm">{errors.otp.message}</p>
                 )}
