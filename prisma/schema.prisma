@@ -75,7 +75,6 @@ model Interviews {
 model Candidates {
   id               String  @id @default(uuid())
   email            String
-  password         String
   isInterviewGiven Boolean @default(false)
 
   createdAt DateTime @default(now())
@@ -84,9 +83,21 @@ model Candidates {
   interviewId String
   interview   Interviews @relation(references: [id], fields: [interviewId], onDelete: Cascade)
 
-  CandidatesAnswers CandidatesAnswers[]
+  CandidatesAnswers  CandidatesAnswers[]
+  CandidatesLoginOTP CandidateLoginOtp?
 
   @@unique([email, interviewId])
+}
+
+model CandidateLoginOtp {
+  id  String @id @default(uuid())
+  otp Int
+
+  expires   DateTime
+  createdAt DateTime @default(now())
+
+  candidateId String     @unique
+  candidate   Candidates @relation(references: [id], fields: [candidateId], onDelete: Cascade)
 }
 
 model Questions {
