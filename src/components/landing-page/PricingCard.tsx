@@ -4,6 +4,7 @@ import { CheckCircle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import Loader from "../Loader";
 
 const PricingCard = ({
   planName,
@@ -12,6 +13,7 @@ const PricingCard = ({
   buttonText,
   isHighlighted,
   handleClick,
+  isPending,
 }: {
   planName: string;
   price: string;
@@ -19,6 +21,7 @@ const PricingCard = ({
   buttonText: string;
   isHighlighted: boolean;
   handleClick: (planName: string) => void;
+  isPending: boolean;
 }) => {
   return (
     <div
@@ -63,8 +66,13 @@ const PricingCard = ({
             : "text-primary border-indigo-300 hover:border-indigo-600 hover:bg-transparent hover:text-primary delay-100 transition-all"
         }
         onClick={() => handleClick(planName)}
+        disabled={isPending}
       >
-        {buttonText}
+        {isPending && planName === "Pro" ? (
+          <Loader size="sm" white />
+        ) : (
+          buttonText
+        )}
       </Button>
     </div>
   );
