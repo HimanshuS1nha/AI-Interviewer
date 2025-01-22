@@ -8,7 +8,9 @@ import axios, { AxiosError } from "axios";
 import { ZodError } from "zod";
 import dynamic from "next/dynamic";
 
+import { Button } from "@/components/ui/button";
 import Questions from "@/components/interview/Questions";
+import EditAnswerDialog from "@/components/interview/EditAnswerDialog";
 
 import { submitAnswerValidator } from "@/validators/submit-answer-validator";
 
@@ -17,7 +19,6 @@ const UserVideo = dynamic(() => import("@/components/interview/UserVideo"), {
 });
 
 import type { QuestionType } from "../../../../../types";
-import { Button } from "@/components/ui/button";
 
 const InterviewStart = () => {
   const router = useRouter();
@@ -30,6 +31,8 @@ const InterviewStart = () => {
   const [isMicrophoneAccessGiven, setIsMicrophoneAccessGiven] = useState(false);
   const [question, setQuestion] = useState<QuestionType>();
   const [answer, setAnswer] = useState("");
+  const [isEditAnswerDialogVisible, setIsEditAnswerDialogVisible] =
+    useState(false);
 
   const { data, error } = useQuery({
     queryKey: [`get-question-${params.interviewId}-${questionNumber}`],
@@ -131,6 +134,12 @@ const InterviewStart = () => {
     <section className="flex flex-col gap-y-6">
       {isMicrophoneAccessGiven ? (
         <>
+          <EditAnswerDialog
+            answer={answer}
+            setAnswer={setAnswer}
+            isVisible={isEditAnswerDialogVisible}
+            setIsVisible={setIsEditAnswerDialogVisible}
+          />
           <div className="flex justify-between items-center">
             <div />
             <h1 className="text-2xl text-primary font-semibold text-center">

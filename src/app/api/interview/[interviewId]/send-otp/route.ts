@@ -4,9 +4,9 @@ import { ZodError } from "zod";
 import prisma from "@/lib/db";
 
 import { getCandidate } from "@/helpers/get-candidate";
+import { createAndSendCandidateLoginOtp } from "@/helpers/create-and-send-candidate-login-otp";
 
 import { emailValidator } from "@/validators/email-validator";
-import { createAndSendCandidateLoginOtp } from "@/helpers/create-and-send-candidate-login-otp";
 
 export const POST = async (
   req: NextRequest,
