@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import BrandLogo from "@/components/BrandLogo";
 
 const Footer = () => {
@@ -14,15 +16,24 @@ const Footer = () => {
         <div className="flex flex-col gap-y-4 items-center">
           <p className="font-semibold">Quick Links</p>
           <div className="flex flex-col gap-y-2 items-center">
-            <p className="hover:text-primary delay-100 transition-all cursor-pointer">
+            <Link
+              href={"/"}
+              className="hover:text-primary delay-100 transition-all"
+            >
               Home
-            </p>
-            <p className="hover:text-primary delay-100 transition-all cursor-pointer">
+            </Link>
+            <Link
+              href={"/pricing"}
+              className="hover:text-primary delay-100 transition-all"
+            >
               Pricing
-            </p>
-            <p className="hover:text-primary delay-100 transition-all cursor-pointer">
+            </Link>
+            <Link
+              href={"/contact-us"}
+              className="hover:text-primary delay-100 transition-all"
+            >
               Contact Us
-            </p>
+            </Link>
           </div>
         </div>
 
