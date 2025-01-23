@@ -26,7 +26,7 @@ enum InterviewStatus {
 
 enum PaymentStatus {
   PENDING
-  COMPLETE
+  PAID
 }
 
 model Users {

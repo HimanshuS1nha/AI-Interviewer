@@ -41,7 +41,10 @@ const PricingCard = ({
         <p className="text-white text-sm">{planName}</p>
       </div>
 
-      <p className="text-3xl font-bold">{price}</p>
+      <p className="text-3xl font-bold">
+        {planName !== "Custom" && "₹"}
+        {price}
+      </p>
 
       <div className="flex flex-col gap-y-4">
         {features.map((feature) => {

@@ -34,7 +34,7 @@ const InterviewCard = ({ interview }: { interview: InterviewType }) => {
             Results
           </Link>
         </Button>
-      ) : interview.status !== "ONGOING" ? (
+      ) : interview.status === "ONGOING" ? (
         <div className="flex gap-x-2 items-center">
           <Button
             variant={"outline"}

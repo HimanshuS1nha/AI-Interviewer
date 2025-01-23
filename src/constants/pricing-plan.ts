@@ -1,7 +1,7 @@
 export const pricingPlan = [
   {
     planName: "Free",
-    price: "₹0",
+    price: "0",
     features: [
       "1 interview (5 questions and 15 candidates per interview)",
       "AI generated questions based on your job description",
@@ -12,7 +12,7 @@ export const pricingPlan = [
   },
   {
     planName: "Pro",
-    price: "₹500",
+    price: "500",
     features: [
       "5 interviews (5 questions and 30 candidates per interview)",
       "AI generated questions based on your job description",

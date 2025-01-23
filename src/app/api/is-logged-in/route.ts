@@ -14,7 +14,7 @@ export const GET = async () => {
     const { payload } = (await jwtVerify(
       token,
       new TextEncoder().encode(process.env.JWT_SECRET)
-    )) as { payload: { email: string} };
+    )) as { payload: { email: string } };
 
     const user = await getUserByEmail(payload.email);
     if (!user) {
@@ -27,6 +27,7 @@ export const GET = async () => {
           email: user.email,
           name: user.name,
           id: user.id,
+          remainingNumberOfInterviews: user.remainingNumberOfInterviews,
         },
       },
       { status: 200 }

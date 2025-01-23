@@ -52,6 +52,9 @@ const UserButton = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My account</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem className="cursor-not-allowed font-semibold text-rose-600">
+          Remaining : {user?.remainingNumberOfInterviews}
+        </DropdownMenuItem>
         {pathname === "/" && (
           <DropdownMenuItem asChild>
             <Link href={"/dashboard/interviews"} className="cursor-pointer">

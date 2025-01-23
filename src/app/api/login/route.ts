@@ -53,7 +53,12 @@ export const POST = async (req: NextRequest) => {
 
     return NextResponse.json(
       {
-        user: { email: user.email, name: user.name, id: user.id },
+        user: {
+          email: user.email,
+          name: user.name,
+          id: user.id,
+          remainingNumberOfInterviews: user.remainingNumberOfInterviews,
+        },
         message: "Logged in successfully",
       },
       { status: 200 }
