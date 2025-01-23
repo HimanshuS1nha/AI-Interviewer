@@ -1,3 +1,5 @@
+import "server-only";
+
 import { model } from "@/lib/gemini";
 
 export const generateQuestions = async (
