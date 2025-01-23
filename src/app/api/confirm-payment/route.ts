@@ -22,10 +22,10 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.redirect(new URL("/payment-failure", req.url));
       }
 
-      const { payload } = await jwtVerify(
+      const { payload } = (await jwtVerify(
         token,
         new TextEncoder().encode(process.env.JWT_SECRET)
-      ) as { payload: { email: string } };
+      )) as { payload: { email: string } };
 
       await prisma.paymentDetails.update({
         where: {
@@ -48,6 +48,7 @@ export const POST = async (req: NextRequest) => {
         },
         data: {
           remainingNumberOfInterviews: user.remainingNumberOfInterviews + 10,
+          plan: "PRO",
         },
       });
 
@@ -55,7 +56,7 @@ export const POST = async (req: NextRequest) => {
     } else {
       return NextResponse.redirect(new URL("/payment-failure", req.url));
     }
-  } catch (error) {
+  } catch {
     return NextResponse.redirect(new URL("/payment-failure", req.url));
   }
 };

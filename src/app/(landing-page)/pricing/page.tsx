@@ -35,7 +35,7 @@ const Pricing = () => {
         },
       };
 
-      // @ts-ignore
+      // @ts-expect-error No types for Razorpay object on window
       const razorpayModal = new window.Razorpay(options);
       razorpayModal.open();
     },
