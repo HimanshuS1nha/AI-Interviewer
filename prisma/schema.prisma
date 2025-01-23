@@ -24,6 +24,11 @@ enum InterviewStatus {
   COMPLETE
 }
 
+enum PaymentStatus {
+  PENDING
+  COMPLETE
+}
+
 model Users {
   id                          String   @id @default(uuid())
   name                        String
@@ -36,8 +41,22 @@ model Users {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  OTP        Otp?
-  Interviews Interviews[]
+  OTP            Otp?
+  Interviews     Interviews[]
+  PaymentDetails PaymentDetails[]
+}
+
+model PaymentDetails {
+  id      String        @id @default(uuid())
+  orderId String        @unique
+  amount  Int
+  status  PaymentStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userEmail String
+  user      Users  @relation(references: [email], fields: [userEmail], onDelete: Cascade)
 }
 
 model Otp {
