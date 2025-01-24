@@ -1,12 +1,46 @@
 import Link from "next/link";
 import { Clipboard, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { ZodError } from "zod";
 
 import { Button } from "@/components/ui/button";
+
+import { startInterviewValidator } from "@/validators/start-interview-validator";
 
 import type { InterviewType } from "../../../types";
 
 const InterviewCard = ({ interview }: { interview: InterviewType }) => {
+  const queryClient = useQueryClient();
+
+  const {} = useMutation({
+    mutationKey: [`start-interview-${interview.id}`],
+    mutationFn: async () => {
+      const parsedData = await startInterviewValidator.parseAsync({
+        interviewId: interview.id,
+      });
+
+      const { data } = await axios.post("/api/start-interview", {
+        ...parsedData,
+      });
+
+      return data as { message: string };
+    },
+    onSuccess: async (data) => {
+      toast.success(data.message);
+      await queryClient.invalidateQueries({ queryKey: ["get-interviews"] });
+    },
+    onError: (error) => {
+      if (error instanceof ZodError) {
+        toast.error(error.errors[0].message);
+      } else if (error instanceof AxiosError && error.response?.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Some error occured. Please try again later!");
+      }
+    },
+  });
   return (
     <div className="border border-gray-300 w-[98%] sm:w-[410px] rounded-lg py-3 px-6 flex flex-col gap-y-5">
       <div className="flex flex-col gap-y-1">
