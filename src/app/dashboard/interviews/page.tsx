@@ -55,7 +55,7 @@ const Interviews = () => {
         setIsVisible={setIsVisible}
       />
 
-      <div className="flex gap-x-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <Input
           placeholder="Search by job title..."
           value={searchQuery}

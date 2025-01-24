@@ -52,7 +52,7 @@ const UserButton = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-not-allowed font-semibold text-rose-600">
+        <DropdownMenuItem className="cursor-not-allowed font-semibold text-rose-600 focus:text-rose-600">
           Remaining : {user?.remainingNumberOfInterviews}
         </DropdownMenuItem>
         {pathname === "/" && (
