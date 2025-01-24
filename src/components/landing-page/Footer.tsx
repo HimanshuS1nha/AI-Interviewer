@@ -5,8 +5,8 @@ import BrandLogo from "@/components/BrandLogo";
 const Footer = () => {
   return (
     <div className="flex flex-col gap-y-10 mt-20">
-      <footer className="flex justify-between items-center px-28">
-        <div className="flex flex-col gap-y-4 w-[25%]">
+      <footer className="flex flex-col lg:flex-row justify-center lg:justify-between items-center px-4 lg:px-16 xl:px-28 gap-y-8">
+        <div className="flex flex-col items-center sm:items-start gap-y-4 w-full sm:w-[25%]">
           <BrandLogo />
           <p className="text-justify">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae
