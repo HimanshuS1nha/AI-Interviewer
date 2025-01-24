@@ -20,7 +20,9 @@ const Title = ({
       <h1
         className={cn(
           "font-semibold text-[#222222] max-w-4xl tracking-tight",
-          size === "lg" ? "text-6xl text-center" : "text-4xl"
+          size === "lg"
+            ? "text-2xl sm:text-4xl lg:text-6xl text-center"
+            : "text-xl sm:text-2xl lg:text-4xl"
         )}
       >
         {title}

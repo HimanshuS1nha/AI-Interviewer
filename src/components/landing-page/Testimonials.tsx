@@ -9,6 +9,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
+import Title from "@/components/landing-page/Title";
 
 import { testimonials } from "@/constants/testimonials";
 
@@ -16,12 +17,17 @@ const Testimonials = () => {
   return (
     <section className="mt-20 flex flex-col items-center justify-center gap-y-10">
       <div className="flex flex-col gap-y-3.5 items-center">
-        <p className="text-primary text-sm font-medium">
+        <Title
+          tagline="What our customers say about us"
+          title="Testimonials"
+          size="sm"
+        />
+        {/* <p className="text-primary text-sm font-medium">
           What our customers say about us
         </p>
         <h1 className="text-6xl font-semibold text-[#222222] max-w-4xl tracking-tight">
           Testimonials
-        </h1>
+        </h1> */}
         <p className="max-w-3xl text-gray-700 text-center">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus
           corporis omnis, explicabo debitis repudiandae quae ducimus, quas in
@@ -34,7 +40,7 @@ const Testimonials = () => {
         opts={{
           align: "start",
         }}
-        className="w-[80%]"
+        className="w-[90%] xl:w-[80%]"
       >
         <CarouselContent>
           {testimonials.map((testimonial) => (

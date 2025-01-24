@@ -5,7 +5,7 @@ import Title from "@/components/landing-page/Title";
 
 const HeroSection = () => {
   return (
-    <div className="h-[92vh] flex flex-col items-center justify-center gap-y-8">
+    <div className="h-[92vh] flex flex-col items-center justify-center gap-y-8 px-3">
       <div className="flex flex-col items-center gap-y-6">
         <Title
           tagline="Streamline hiring with AI-driven interviews"
