@@ -51,7 +51,7 @@ const Pricing = () => {
     <section className="flex flex-col items-center gap-y-9">
       <Title tagline="As cheap as it can be" title="Pricing" />
 
-      <div className="flex w-full justify-center items-center gap-x-6">
+      <div className="flex flex-wrap w-full justify-center items-center gap-6">
         {pricingPlan.map((item) => {
           return (
             <PricingCard
