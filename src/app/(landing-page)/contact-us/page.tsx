@@ -9,7 +9,7 @@ const ContactUs = () => {
     <div className="flex flex-col gap-y-10 items-center">
       <Title tagline="Reach out to us" title="Contact Us" />
 
-      <div className="flex flex-col gap-y-6 w-[60%]">
+      <div className="flex flex-col gap-y-6 w-[90%] md:w-[80%] lg:w-[60%]">
         <div className="flex flex-col gap-y-3">
           <Label htmlFor="name">Name</Label>
           <Input placeholder="Enter your name" id="name" type="text" />
