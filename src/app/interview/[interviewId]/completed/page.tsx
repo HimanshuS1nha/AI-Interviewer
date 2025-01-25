@@ -6,15 +6,15 @@ import BrandLogo from "@/components/BrandLogo";
 const InterviewCompleted = () => {
   return (
     <section className="w-full h-[100dvh] flex items-center justify-center bg-gray-100">
-      <div className="bg-white w-[30%] py-7 rounded-xl flex flex-col justify-center items-center gap-y-7 shadow shadow-gray-500">
+      <div className="bg-white w-[90%] md:w-[75%] lg:w-[50%] xl:w-[30%] py-7 rounded-xl flex flex-col justify-center items-center gap-y-7 shadow shadow-gray-500">
         <BrandLogo />
 
         <div className="flex flex-col gap-y-3 items-center">
-          <p className="text-emerald-600 text-lg font-semibold">
+          <p className="text-emerald-600 text-lg font-semibold text-center">
             Your interview has been submitted
           </p>
 
-          <p className="text-sm">Thank you for taking the interview</p>
+          <p className="text-sm text-center">Thank you for taking the interview</p>
         </div>
 
         <Button asChild>
