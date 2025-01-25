@@ -34,7 +34,7 @@ const ContactUs = () => {
   const { mutate: handleContactUs, isPending } = useMutation({
     mutationKey: ["contact-us"],
     mutationFn: async (values: contactUsValidatorType) => {
-      const { data } = await axios.post("/api/contact", { ...values });
+      const { data } = await axios.post("/api/contact-us", { ...values });
 
       return data as { message: string };
     },
