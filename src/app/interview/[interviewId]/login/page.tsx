@@ -105,7 +105,7 @@ const InterviewLogin = () => {
   });
   return (
     <section className="w-full h-[100dvh] flex items-center justify-center bg-gray-100">
-      <div className="bg-white w-[30%] py-7 rounded-xl flex flex-col justify-center items-center gap-y-7 shadow shadow-gray-500">
+      <div className="bg-white w-[90%] md:w-[75%] lg:w-[50%] xl:w-[30%] py-7 rounded-xl flex flex-col justify-center items-center gap-y-7 shadow shadow-gray-500">
         <BrandLogo />
         <div className="flex flex-col w-full px-7 gap-y-6">
           <div className="flex flex-col">
@@ -138,7 +138,7 @@ const InterviewLogin = () => {
                 <p className="text-rose-600 text-sm">{errors.email.message}</p>
               )}
             </div>
-            {!isOtpGenerated && (
+            {isOtpGenerated && (
               <div className="flex flex-col gap-y-3">
                 <Label htmlFor="otp" className="ml-1">
                   OTP
