@@ -8,8 +8,8 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="w-full h-[100dvh] flex">
-      <div className="w-[75%] h-full relative">
+    <div className="w-full h-[100dvh] flex justify-center items-center bg-gray-100 lg:bg-white">
+      <div className="hidden lg:block w-[65%] xl:w-[75%] h-full relative">
         <Image
           src="/auth-img.webp"
           alt="Interview"
@@ -18,7 +18,7 @@ export default function AuthLayout({
         />
       </div>
 
-      <div className="w-[25%] flex flex-col justify-between items-center  py-4 bg-white shadow-md shadow-black">
+      <div className="w-[90%] md:w-[50%] lg:w-[35%] xl:w-[25%] lg:h-full max-h-[90%] lg:max-h-full flex flex-col gap-y-8 lg:justify-between items-center py-6 lg:py-4 px-4 lg:px-0 bg-white shadow-md shadow-black rounded-xl lg:rounded-none overflow-y-auto">
         <BrandLogo />
 
         {children}

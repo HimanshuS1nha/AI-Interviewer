@@ -68,7 +68,7 @@ const Login = () => {
   return (
     <>
       <form
-        className="flex flex-col gap-y-7 w-[90%]"
+        className="flex flex-col gap-y-7 w-[98%] lg:w-[90%]"
         onSubmit={handleSubmit((data) => handleLogin(data))}
       >
         <p className="text-primary text-xl font-semibold text-center">
@@ -129,7 +129,7 @@ const Login = () => {
             Signup
           </Link>
         </p>
-        <p className="text-sm font-medium text-gray-700">
+        <p className="text-sm font-medium text-gray-700 text-center">
           By continuing, you agree to our{" "}
           <span className="font-medium">Terms and Conditions</span>
         </p>

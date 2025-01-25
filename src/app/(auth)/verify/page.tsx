@@ -85,7 +85,7 @@ const Verify = () => {
   return (
     <>
       <form
-        className="flex flex-col gap-y-7 w-[90%]"
+        className="flex flex-col gap-y-7 w-[98%] lg:w-[90%]"
         onSubmit={(e) => {
           e.preventDefault();
           handleVerify();

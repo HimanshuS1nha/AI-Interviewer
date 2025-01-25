@@ -59,7 +59,7 @@ const CreateNewPassword = () => {
   });
   return (
     <form
-      className="flex flex-col gap-y-7 w-[90%]"
+      className="flex flex-col gap-y-7 w-[98%] lg:w-[90%]"
       onSubmit={handleSubmit((data) => handleCreateNewPassword(data))}
     >
       <p className="text-primary text-xl font-semibold text-center">
