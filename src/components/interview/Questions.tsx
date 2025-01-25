@@ -8,9 +8,11 @@ import type { QuestionType } from "../../../types";
 const Questions = ({
   activeQuestion,
   question,
+  answer,
 }: {
   activeQuestion: number;
   question: QuestionType;
+  answer: string;
 }) => {
   const speakQuestion = () => {
     if ("speechSynthesis" in window) {
@@ -24,7 +26,7 @@ const Questions = ({
     }
   };
   return (
-    <div className="w-[60%] bg-gray-100 p-4 rounded-xl flex flex-col gap-y-6">
+    <div className="w-[98%] sm:w-[90%] lg:w-[60%] bg-gray-100 p-4 rounded-xl flex flex-col gap-y-6">
       <div className="flex gap-2 items-center flex-wrap">
         {[0, 1, 2, 3, 4].map((item) => {
           return (
@@ -58,15 +60,7 @@ const Questions = ({
           />
         </div>
         <div className="flex gap-x-2 items-end">
-          <p className="text-justify">
-            Answer. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea
-            ad voluptates eius magnam esse delectus distinctio odit officiis
-            repellat adipisci. Quae tempore at dolore rerum! Ut nobis possimus
-            numquam necessitatibus facilis tempora totam culpa alias at,
-            veritatis amet voluptatem placeat aspernatur consequuntur harum
-            distinctio. Harum, commodi deleniti minima assumenda ad ratione
-            ipsa, possimus provident, error at vel veniam animi laborum.
-          </p>
+          <p className="text-justify">Answer. {answer}</p>
           <Pencil
             size={24}
             className="text-black hover:text-primary delay-100 transition-all ml-1.5 cursor-pointer my-1 shrink-0"

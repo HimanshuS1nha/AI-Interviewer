@@ -6,7 +6,7 @@ export default function InterviewLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="px-32">
+    <div className="px-4 lg:px-16 xl:px-24 2xl:px-32">
       <Navbar />
       {children}
     </div>

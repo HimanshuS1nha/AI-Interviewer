@@ -47,7 +47,7 @@ const UserVideo = ({
     return null;
   }
   return (
-    <div className="flex flex-col items-center gap-y-6 w-[40%]">
+    <div className="flex flex-col-reverse lg:flex-col items-center gap-y-6 w-[98%] sm:w-[90%] lg:w-[40%]">
       <div className="w-full h-[400px] bg-gray-100 flex items-center justify-center rounded-xl">
         <Webcam
           onUserMedia={() => setIsCameraPermissionGiven(true)}

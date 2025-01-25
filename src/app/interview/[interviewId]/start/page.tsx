@@ -141,8 +141,8 @@ const InterviewStart = () => {
             setIsVisible={setIsEditAnswerDialogVisible}
           />
           <div className="flex justify-between items-center">
-            <div />
-            <h1 className="text-2xl text-primary font-semibold text-center">
+            <div className="hidden lg:block" />
+            <h1 className="text-lg sm:text-2xl text-primary font-semibold text-center">
               React.js Interview
             </h1>
             <Button
@@ -155,8 +155,8 @@ const InterviewStart = () => {
           </div>
 
           {question && (
-            <div className="flex w-full h-full gap-x-3">
-              <Questions activeQuestion={questionNumber} question={question} />
+            <div className="flex flex-col lg:flex-row w-full h-full gap-3 items-center lg:items-start">
+              <Questions activeQuestion={questionNumber} question={question} answer={answer} />
 
               <UserVideo setAnswer={setAnswer} answer={answer} />
             </div>

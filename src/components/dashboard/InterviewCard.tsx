@@ -14,7 +14,7 @@ import type { InterviewType } from "../../../types";
 const InterviewCard = ({ interview }: { interview: InterviewType }) => {
   const queryClient = useQueryClient();
 
-  const {} = useMutation({
+  const { mutate: handleStartInterview, isPending } = useMutation({
     mutationKey: [`start-interview-${interview.id}`],
     mutationFn: async () => {
       const parsedData = await startInterviewValidator.parseAsync({
@@ -89,7 +89,13 @@ const InterviewCard = ({ interview }: { interview: InterviewType }) => {
           </Button>
         </div>
       ) : (
-        <Button className="w-full">Start interview</Button>
+        <Button
+          className="w-full"
+          onClick={() => handleStartInterview()}
+          disabled={isPending}
+        >
+          {isPending ? "Please wait..." : "Start interview"}
+        </Button>
       )}
     </div>
   );
