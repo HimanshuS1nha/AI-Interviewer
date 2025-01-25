@@ -4,16 +4,18 @@ const Title = ({
   tagline,
   title,
   size = "lg",
+  className,
 }: {
   tagline: string;
   title: string;
   size?: "sm" | "lg";
+  className?: string;
 }) => {
   return (
     <div
       className={cn(
         "mt-10 flex flex-col gap-y-2.5",
-        size === "lg" && "items-center"
+        size === "lg" ? "items-center" : className
       )}
     >
       <p className="text-primary text-sm font-medium">{tagline}</p>

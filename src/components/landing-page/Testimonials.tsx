@@ -21,6 +21,7 @@ const Testimonials = () => {
           tagline="What our customers say about us"
           title="Testimonials"
           size="sm"
+          className="items-center"
         />
         {/* <p className="text-primary text-sm font-medium">
           What our customers say about us

@@ -6,8 +6,8 @@ import { whyChooseUs } from "@/constants/why-choose-us";
 
 const WhyChooseUs = () => {
   return (
-    <section className="flex justify-center gap-x-16">
-      <div className="w-[30%] h-[470px] relative">
+    <section className="flex flex-col 2xl:flex-row items-center 2xl:items-start justify-center gap-x-16">
+      <div className="w-[90%] lg:w-[50%] 2xl:w-[30%] h-[600px] lg:h-[550px] 2xl:h-[470px] relative">
         <Image
           src="/why-choose-us-img.webp"
           alt="Interview"
@@ -15,12 +15,13 @@ const WhyChooseUs = () => {
           fill
         />
       </div>
-      <div className="w-[55%] flex flex-col gap-y-7">
+      <div className="w-[90%] xl:w-[75%] 2xl:w-[55%] flex flex-col items-center 2xl:items-start gap-y-7">
         <div className="flex flex-col gap-y-3.5">
           <Title
             tagline="Providing the best for our customers"
             title="Why Choose Us?"
             size="sm"
+            className="items-center sm:items-start"
           />
           <p className="max-w-3xl text-gray-700 text-justify">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus
