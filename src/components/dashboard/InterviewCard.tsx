@@ -14,33 +14,57 @@ import type { InterviewType } from "../../../types";
 const InterviewCard = ({ interview }: { interview: InterviewType }) => {
   const queryClient = useQueryClient();
 
-  const { mutate: handleStartInterview, isPending } = useMutation({
-    mutationKey: [`start-interview-${interview.id}`],
-    mutationFn: async () => {
-      const parsedData = await startInterviewValidator.parseAsync({
-        interviewId: interview.id,
-      });
+  const { mutate: handleStartInterview, isPending: startInterviewPending } =
+    useMutation({
+      mutationKey: [`start-interview-${interview.id}`],
+      mutationFn: async () => {
+        const parsedData = await startInterviewValidator.parseAsync({
+          interviewId: interview.id,
+        });
 
-      const { data } = await axios.post("/api/start-interview", {
-        ...parsedData,
-      });
+        const { data } = await axios.post("/api/start-interview", {
+          ...parsedData,
+        });
 
-      return data as { message: string };
-    },
-    onSuccess: async (data) => {
-      toast.success(data.message);
-      await queryClient.invalidateQueries({ queryKey: ["get-interviews"] });
-    },
-    onError: (error) => {
-      if (error instanceof ZodError) {
-        toast.error(error.errors[0].message);
-      } else if (error instanceof AxiosError && error.response?.data.error) {
-        toast.error(error.response.data.error);
-      } else {
-        toast.error("Some error occured. Please try again later!");
-      }
-    },
-  });
+        return data as { message: string };
+      },
+      onSuccess: async (data) => {
+        toast.success(data.message);
+        await queryClient.invalidateQueries({ queryKey: ["get-interviews"] });
+      },
+      onError: (error) => {
+        if (error instanceof ZodError) {
+          toast.error(error.errors[0].message);
+        } else if (error instanceof AxiosError && error.response?.data.error) {
+          toast.error(error.response.data.error);
+        } else {
+          toast.error("Some error occured. Please try again later!");
+        }
+      },
+    });
+
+  const { mutate: handleDeleteInterview, isPending: deleteInterviewPending } =
+    useMutation({
+      mutationKey: [`delete-interview-${interview.id}`],
+      mutationFn: async () => {
+        const { data } = await axios.delete(
+          `/api/delete-interview/${interview.id}`
+        );
+
+        return data as { message: string };
+      },
+      onSuccess: async (data) => {
+        toast.success(data.message);
+        await queryClient.invalidateQueries({ queryKey: ["get-interviews"] });
+      },
+      onError: (error) => {
+        if (error instanceof AxiosError && error.response?.data.error) {
+          toast.error(error.response.data.error);
+        } else {
+          toast.error("Some error occured. Please try again later!");
+        }
+      },
+    });
   return (
     <div className="border border-gray-300 w-[98%] sm:w-[410px] rounded-lg py-3 px-6 flex flex-col gap-y-5">
       <div className="flex flex-col gap-y-1">
@@ -49,6 +73,8 @@ const InterviewCard = ({ interview }: { interview: InterviewType }) => {
           <Button
             variant={"ghost"}
             className="text-black hover:text-destructive delay-100 transition-all"
+            onClick={() => handleDeleteInterview()}
+            disabled={deleteInterviewPending}
           >
             <Trash2 size={20} />
           </Button>
@@ -92,9 +118,9 @@ const InterviewCard = ({ interview }: { interview: InterviewType }) => {
         <Button
           className="w-full"
           onClick={() => handleStartInterview()}
-          disabled={isPending}
+          disabled={startInterviewPending}
         >
-          {isPending ? "Please wait..." : "Start interview"}
+          {startInterviewPending ? "Please wait..." : "Start interview"}
         </Button>
       )}
     </div>
