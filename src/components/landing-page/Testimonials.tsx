@@ -23,12 +23,6 @@ const Testimonials = () => {
           size="sm"
           className="items-center"
         />
-        {/* <p className="text-primary text-sm font-medium">
-          What our customers say about us
-        </p>
-        <h1 className="text-6xl font-semibold text-[#222222] max-w-4xl tracking-tight">
-          Testimonials
-        </h1> */}
         <p className="max-w-3xl text-gray-700 text-center">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus
           corporis omnis, explicabo debitis repudiandae quae ducimus, quas in
