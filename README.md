@@ -4,12 +4,12 @@ AI Interviewer is a smart, AI-powered tool designed for businesses to streamline
 
 ## Screenshots
 
-![AI Interviewer 1](https://github.com/user-attachments/assets/e6c1b130-93fe-424b-9c30-35d3f70b6486)
----
-![AI Interviewer 2](https://github.com/user-attachments/assets/5743c1af-f480-4db1-a5f6-6466cbb82f18)
----
-![AI Interviewer 3](https://github.com/user-attachments/assets/b584bcf7-19ff-4591-a05c-354d6548c73b)
----
+## ![AI Interviewer 1](https://github.com/user-attachments/assets/e6c1b130-93fe-424b-9c30-35d3f70b6486)
+
+## ![AI Interviewer 2](https://github.com/user-attachments/assets/5743c1af-f480-4db1-a5f6-6466cbb82f18)
+
+## ![AI Interviewer 3](https://github.com/user-attachments/assets/b584bcf7-19ff-4591-a05c-354d6548c73b)
+
 ![AI Interviewer 4](https://github.com/user-attachments/assets/82689627-206e-4dba-9e97-c7ae344a32a7)
 
 ## Get started
@@ -22,7 +22,13 @@ AI Interviewer is a smart, AI-powered tool designed for businesses to streamline
    npm install
    ```
 
-3. Start the dev server
+3. Setup database
+
+   ```bash
+   npx prisma db push
+   ```
+
+4. Start the dev server
 
    ```bash
     npm run dev
