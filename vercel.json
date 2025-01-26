@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "src/app/api/create-interview/route.ts": {
+      "maxDuration": 60
+    }
+  }
+}
