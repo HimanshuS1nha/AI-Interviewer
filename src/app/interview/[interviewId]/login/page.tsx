@@ -20,6 +20,8 @@ import {
 import { Button } from "@/components/ui/button";
 import BrandLogo from "@/components/BrandLogo";
 
+import { useCandidateEmail } from "@/hooks/useCandidateEmail";
+
 import { emailValidator } from "@/validators/email-validator";
 import {
   interviewLoginValidator,
@@ -29,6 +31,7 @@ import {
 const InterviewLogin = () => {
   const router = useRouter();
   const params = useParams() as { interviewId: string };
+  const setCandidateEmail = useCandidateEmail((state) => state.setEmail);
 
   const [isOtpGenerated, setIsOtpGenerated] = useState(false);
 
@@ -88,10 +91,11 @@ const InterviewLogin = () => {
         }
       );
 
-      return data as { message: string };
+      return data as { message: string; email: string };
     },
     onSuccess: async (data) => {
       toast.success(data.message);
+      setCandidateEmail(data.email);
       reset();
       router.replace(`/interview/${params.interviewId}/start`);
     },

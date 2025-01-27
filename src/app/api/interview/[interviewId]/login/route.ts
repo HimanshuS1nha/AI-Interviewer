@@ -116,7 +116,7 @@ export const POST = async (
     });
 
     return NextResponse.json(
-      { message: "OTP sent successfully" },
+      { message: "Logged in successfully", email },
       { status: 200 }
     );
   } catch (error) {
