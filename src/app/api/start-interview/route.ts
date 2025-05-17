@@ -59,6 +59,7 @@ export const POST = async (req: NextRequest) => {
       },
       data: {
         status: "ONGOING",
+        startedAt: new Date(),
       },
     });
 
